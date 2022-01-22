@@ -17,20 +17,15 @@ const theme = createTheme({
       contrastText: "FFF",
     },
     secondary: {
-      main: "#FFF",
+      main: "#333333",
     },
     background: {
-      default: "#0A0C26",
+      default: "#000",
     },
     text: {
       primary: "#ffffff",
       secondary: "#d2c1af",
-    },
-    button: {
-      main: "#e3b37f",
-      dark: "#C18749",
-      contrastText: "#ffffff",
-    },
+    }
   },
   typography: {
     fontFamily: "Roboto, Tw Cen MT, sans-serif",
@@ -49,13 +44,3 @@ const theme = createTheme({
 });
 
 export default theme;
-
-declare module "@mui/material/styles" {
-  interface PaletteOptions {
-    button?: PaletteOptions["primary"];
-  }
-}
-
-declare module "@mui/material/styles" {
-  interface BreakpointOverrides {}
-}

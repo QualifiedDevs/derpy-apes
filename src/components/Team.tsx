@@ -1,128 +1,79 @@
 import { styled } from "@mui/material/styles";
-import { Box, Typography, Divider, Button } from "@mui/material";
+import { Box, Container, Typography } from "@mui/material";
 
 import Image from "next/image";
 
-import Link from "@components/Link";
-
-import { LogoFull } from "@components/Branding";
-
-//@ts-ignore
-const Company = styled(({ link, ...props }) => {
-  return (
-    <Button component="a" href={link} {...props}>
-      <LogoFull />
-    </Button>
-  );
-})`
-  display: block;
-  border: 3px solid #1B2060;
-  width: fit-content;
-  height: fit-content;
-  border-radius: 60px;
-  text-transform: none;
-  padding: 1.1375rem;
-  color: white;
-`;
-
-//@ts-ignore
-const Member = styled(({ member, ...props }) => {
-  const { name, twitter, discord } = member;
+const Avatar = styled(({ src, ...props }) => {
+  console.log(src);
 
   return (
-    <Button {...props} component="a" href={`https://twitter.com/${twitter}`}>
-      <Box component="li">
-        <Box sx={{ mr: 1.8 }} className="avatar">
-          <Image
-            src={`/avatars/${name}.png`}
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center"
-          />
-        </Box>
-        <Typography component="span" sx={{ fontSize: "inherit" }}>
-          {discord}
-        </Typography>
-      </Box>
-    </Button>
+    <Box {...props}>
+      <Image
+        src={`/team-avatars/${src}`}
+        layout="fill"
+        objectFit="cover"
+        objectPosition="center"
+      />
+    </Box>
   );
 })`
-  display: block;
-  border: 3px solid #1B2060;
-  width: fit-content;
-  border-radius: 60px;
-  text-transform: none;
+  position: relative;
+  width: 200px;
+  height: 200px;
 
-  color: white;
-
-  li {
-    font-size: 1.2rem;
-
-    padding: 0.2rem;
-    padding-right: 0.8rem;
-
-    display: flex;
-    align-items: center;
-
-    .avatar {
-      position: relative;
-      width: 60px;
-      height: 60px;
-      border-radius: 100%;
-      border: 3px solid #1B2060;
-    }
-
-    .avatar span {
-      border-radius: 100%;
-    }
+  span {
+    border-radius: 10px;
   }
 `;
 
-//@ts-ignore
-const MemberList = styled(({ team, ...props }) => {
-  const members = Object.keys(team).map((memberName, index) => {
-    const member = team[memberName];
-    member.name = memberName;
-    //@ts-ignore
-    return <Member member={member} key={index} />;
+const Member = styled(({ name, role, avatar, bio, socials, ...props }) => {
+  return (
+    <Box {...props}>
+      <Avatar src={avatar} className="avatar" sx={{mb: 1.5}}/>
+      <Typography className="name">{name}</Typography>
+      <Typography className="role">{role}</Typography>
+    </Box>
+  );
+})`
+  text-align: center;
+
+  .name {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1.5em;
+  }
+
+  .role {
+    color: ${({theme}) => theme.palette.secondary.light}
+  }
+`;
+
+const Team = styled(({ team, ...props }) => {
+  const members = Object.keys(team).map((memberId) => {
+    const memberInfo = team[memberId];
+    return <Member key={memberId} {...memberInfo} />;
   });
 
   return (
-    <Box component="ul" {...props}>
-      {members}
-    </Box>
-  );
-})`
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-row-gap: .5rem;
-`;
-
-//@ts-ignore
-const Team = styled(({ manifest: { team, socials }, ...props }) => {
-  return (
     <Box {...props}>
-        <Typography variant="h3" sx={{mb: 2}}>
-            Created By:
-        </Typography>
-        {/* @ts-ignore */}
-      <Company link={socials.twitter} />
-      <Divider flexItem light sx={{my: 2}} />
-        {/* @ts-ignore */}
-      <MemberList team={team} />
+      <Typography variant="h3" className="heading" sx={{mb: 5}}>
+        Meet the Team
+      </Typography>
+      <Box className="team-members">{members}</Box>
     </Box>
   );
 })`
+  padding: 5rem 0;
 
-  h3 {
-      font-size: 2rem;
+  .heading {
+    text-align: center;
+    text-transform: uppercase;
   }
 
-  hr {
-      background: white;
-      height: 2px;
+  .team-members {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-column-gap: 1rem;
   }
 `;
 

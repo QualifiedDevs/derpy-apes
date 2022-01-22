@@ -12,8 +12,6 @@ const socialIcons = {
   twitter,
 };
 
-//TODO: Type annotations on props
-
 //@ts-ignore
 const SocialButton = styled(({ social, link, ...props }) => {
   //@ts-ignore

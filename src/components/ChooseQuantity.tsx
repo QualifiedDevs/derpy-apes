@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import React, { createContext, useContext, useState } from "react";
 
 import { styled } from "@mui/material/styles";

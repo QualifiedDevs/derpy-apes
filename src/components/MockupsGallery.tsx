@@ -1,9 +1,17 @@
 //@ts-nocheck
 
-import { styled } from "@mui/material/styles";
-import { Box } from "@mui/material";
+import { styled, useTheme } from "@mui/material/styles";
+import { Box, useMediaQuery } from "@mui/material";
 
 import Image from "next/image";
+
+const MockupsGif = styled(({ images, ...props }) => {
+  return (
+    <Box {...props}>
+      <GalleryImage src={images[0]}/>
+    </Box>
+  );
+})``;
 
 const GalleryImage = styled(({ src, ...props }) => {
   return (
@@ -13,11 +21,11 @@ const GalleryImage = styled(({ src, ...props }) => {
   );
 })`
   position: relative;
-  width: 250px;
-  height: 250px;
+  width: 100%;
+  aspect-ratio: 1;
 
   span {
-      border-radius: 10px;
+    border-radius: 10px;
   }
 `;
 
@@ -28,18 +36,17 @@ const Gallery = styled(({ images, ...props }) => {
   return <Box {...props}>{galleryImages}</Box>;
 })`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: .8rem;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 0.8rem;
 `;
 
 const MockupsGallery = ({ images, ...props }) => {
   // Decide which to render based on size of container
 
-  return (
-    <>
-      <Gallery images={images} />
-    </>
-  );
+  const theme = useTheme();
+  const isSmallViewport = useMediaQuery(theme.breakpoints.down("sm"));
+
+  return isSmallViewport ? <MockupsGif images={images}/> : <Gallery images={images} />;
 };
 
 export default MockupsGallery;

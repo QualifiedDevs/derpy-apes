@@ -31,7 +31,9 @@ const theme = createTheme({
     fontFamily: "Roboto, Tw Cen MT, sans-serif",
     h1: {},
     h2: {},
-    h3: {},
+    h3: {
+      fontSize: "2.5em"
+    },
     h4: {},
     h5: {},
     h6: {},

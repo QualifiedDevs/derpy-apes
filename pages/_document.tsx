@@ -65,12 +65,20 @@ MyDocument.getInitialProps = async (ctx) => {
   const { extractCriticalToChunks } = createEmotionServer(cache);
 
   const manifest = JSON.parse(fs.readFileSync("./src/manifest.json", "utf-8"));
+  const contractMetadata = JSON.parse(
+    fs.readFileSync("./src/artifacts/mintContract/metadata.json", "utf-8")
+  );
+  const contractABI = JSON.parse(
+    fs.readFileSync("./src/artifacts/mintContract/abi.json", "utf-8")
+  );
 
   ctx.renderPage = () =>
     originalRenderPage({
       enhanceApp: (App: any) =>
         function EnhanceApp(props) {
           props.pageProps.manifest = manifest;
+          props.pageProps.contractMetadata = contractMetadata;
+          props.pageProps.contractABI = contractABI;
           return <App emotionCache={cache} {...props} />;
         },
     });

@@ -33,6 +33,10 @@ const FAQItem = styled(({ summary, children, ...props }) => {
 })`
   background: ${({ theme }) => theme.palette.secondary.main};
 
+  svg {
+      fill: white;
+  }
+
   border-radius: 12px !important;
 
   margin-bottom: 0.8em;

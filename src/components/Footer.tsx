@@ -16,21 +16,14 @@ const navIcons = {
 };
 
 const NavIconButton = styled(({ icon, link, ...props }) => {
-
-  console.log(icon)
-
   return (
     <Box component="a" {...props}>
       <li>
-        <IconButton color="secondary" >
-          {icon}
-        </IconButton>
+        <IconButton color="secondary">{icon}</IconButton>
       </li>
     </Box>
   );
-})`
-
-`;
+})``;
 
 const getNavButtons = (navItems) => {
   const buttons = Object.keys(navItems).map((navItemName) => {
@@ -48,7 +41,7 @@ const ContractLookup = styled(({ contract, ...props }) => {
       href={`https://etherscan.io/address/${contract}`}
       {...props}
     >
-      {contract}
+      {`${contract.slice(0,13)}...${contract.slice(-13)}`}
     </Button>
   );
 })``;
@@ -58,17 +51,19 @@ const ContractLookup = styled(({ contract, ...props }) => {
 // Need to get socials and opensea button. Same button for each
 
 const Footer = styled(({ socials, marketplaces, contract, ...props }) => {
-
   const socialButtons = getNavButtons(socials);
   const marketplaceButtons = getNavButtons(marketplaces);
 
   return (
     <Box component="footer" {...props}>
-      <Typography variant="h5" sx={{mb: 1}}>derpy apes Smart Contract</Typography>
+      <Typography variant="h5" sx={{ mb: 1 }}>
+        Derpy Apes Smart Contract
+      </Typography>
       <ContractLookup
         variant="contained"
         contract={contract}
         color="secondary"
+        className="contract-lookup"
       />
       <Box component="nav">
         <ul>
@@ -76,7 +71,7 @@ const Footer = styled(({ socials, marketplaces, contract, ...props }) => {
           {marketplaceButtons}
         </ul>
       </Box>
-      <Typography variant="h6">2022 derpy apes</Typography>
+      <Typography variant="h6">2022 Derpy Apes</Typography>
     </Box>
   );
 })`
@@ -93,13 +88,25 @@ const Footer = styled(({ socials, marketplaces, contract, ...props }) => {
     font-size: 0.9em;
   }
 
+  .contract-lookup {
+    font-size: 1em;
+    padding: 0.7em;
+  }
+
   nav {
+    margin: 0.4em 0;
     ul {
       list-style-type: none;
       padding: 0;
       margin: 0;
       display: flex;
       justify-content: center;
+      .MuiIconButton-root {
+
+        padding: .4em;
+        margin: 0 0.2em;
+
+      }
     }
   }
 `;

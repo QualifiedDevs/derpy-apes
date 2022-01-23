@@ -5,7 +5,7 @@ import fs from "fs";
 import { styled } from "@mui/material/styles";
 import { Box, Container, Typography } from "@mui/material";
 
-import { LogoFull } from "@components/Branding";
+import { LogoLong } from "@components/Branding";
 
 import MockupsGallery from "@components/MockupsGallery";
 import MintBox from "@components/MintBox";
@@ -13,26 +13,28 @@ import Team from "@components/Team";
 import FAQ from "@components/FAQ";
 import Footer from "@components/Footer";
 
+import DebugAuthorization from "@components/DebugAuthorization";
+
 //@ts-ignore
-const index = styled(({ manifest, mockupImages, ...props }) => {
-  console.log(mockupImages);
+const index = styled(({ manifest, contractABI, contractMetadata, mockupImages, ...props }) => {
 
   return (
     <Box {...props}>
       {/* @ts-ignore */}
       <Container id="hook">
-        <LogoFull className="logo" sx={{ mb: 1 }} />
+        <LogoLong className="logo" sx={{ mb: 1 }} />
         <Box className="content">
           <MockupsGallery images={mockupImages} />
           <MintBox />
         </Box>
       </Container>
+      {/* <DebugAuthorization variant="contained"/> */}
       <Team team={manifest.team} />
       <FAQ />
       <Footer
         socials={manifest.socials}
         marketplaces={manifest.marketplaces}
-        contract={manifest.contractAddress}
+        contract={contractMetadata.address}
       />
     </Box>
   );
@@ -45,18 +47,35 @@ const index = styled(({ manifest, mockupImages, ...props }) => {
   color: white;
 
   .logo {
-    font-size: 4rem;
+    width: min(100%, 400px);
     justify-content: center;
-    margin: 2rem 0;
+    margin: 2rem auto;
   }
 
   #hook {
-
-
     .content {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, 1fr);
       grid-column-gap: 1em;
+      grid-row-gap: 3em;
+      align-items: center;
+    }
+  }
+
+  ${({theme}) => theme.breakpoints.down("lg")} {
+    #hook {
+      .content {
+        grid-template-columns: 600px;
+        justify-content: center;
+      }
+    }
+  }
+
+  ${({theme}) => theme.breakpoints.down("md")} {
+    #hook {
+      .content {
+        grid-template-columns: 1fr;
+      }
     }
   }
 `;

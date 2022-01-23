@@ -6,7 +6,6 @@ import { Box, Container, Typography } from "@mui/material";
 import Image from "next/image";
 
 const Avatar = styled(({ src, ...props }) => {
-  console.log(src);
 
   return (
     <Box {...props}>
@@ -20,8 +19,7 @@ const Avatar = styled(({ src, ...props }) => {
   );
 })`
   position: relative;
-  width: 200px;
-  height: 200px;
+  aspect-ratio: 1;
 
   span {
     border-radius: 10px;
@@ -30,14 +28,23 @@ const Avatar = styled(({ src, ...props }) => {
 
 const Member = styled(({ name, role, avatar, bio, socials, ...props }) => {
   return (
-    <Box {...props}>
-      <Avatar src={avatar} className="avatar" sx={{mb: 1.5}}/>
+    <Box component="a" href={socials.twitter} {...props}>
+      <Avatar src={avatar} className="avatar" sx={{ mb: 1.5 }} />
       <Typography className="name">{name}</Typography>
       <Typography className="role">{role}</Typography>
     </Box>
   );
 })`
   text-align: center;
+
+  text-decoration: none;
+  color: ${({theme}) => theme.palette.text.primary};
+
+  transition: color .15s ease;
+
+  :hover {
+      color: #1DA1F2;
+  }
 
   .name {
     text-transform: uppercase;
@@ -46,7 +53,7 @@ const Member = styled(({ name, role, avatar, bio, socials, ...props }) => {
   }
 
   .role {
-    color: ${({theme}) => theme.palette.secondary.light}
+    color: ${({ theme }) => theme.palette.secondary.light};
   }
 `;
 
@@ -58,14 +65,15 @@ const Team = styled(({ team, ...props }) => {
 
   return (
     <Box {...props}>
-      <Typography variant="h3" className="heading" sx={{mb: 5}}>
+      <Typography variant="h3" className="heading" sx={{ mb: 5 }}>
         Meet the Team
       </Typography>
-      <Box className="team-members">{members}</Box>
+      <Container className="team-members">{members}</Container>
     </Box>
   );
 })`
   padding: 5rem 0;
+  width: 100%;
 
   .heading {
     text-align: center;
@@ -74,8 +82,10 @@ const Team = styled(({ team, ...props }) => {
 
   .team-members {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(150px, .8fr));
     grid-column-gap: 1rem;
+    grid-row-gap: 1.5rem;
+    justify-content: center;
   }
 `;
 

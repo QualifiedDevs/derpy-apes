@@ -6,7 +6,6 @@
   "marketplaces": {
     "opensea": "https://opensea.io/collection/derpyapes"
   },
-  "contractAddress": "0x96FC56721D2b79485692350014875b3b67CB00eB",
   "mainMenu": {
     "Home": "/"
   },

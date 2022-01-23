@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import Web3 from "web3";
 
 //? How do I know whether this is mainnet or testnet? Is it determined here?

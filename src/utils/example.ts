@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 const { expect } = require("chai");
 // const { ethers } = require("ethers");
 // const web3 = require("web3");

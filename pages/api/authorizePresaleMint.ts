@@ -26,10 +26,6 @@ async function authorizePresaleMint(
 
     console.log("Authorization Request from Account", account)
 
-    console.log(account)
-    console.log(whitelist)
-    console.log(whitelist[account])
-
     if (!whitelist[account])
         return res.status(403).send("Account Not on Whitelist");
 

@@ -19,7 +19,6 @@ export default class MyDocument extends Document {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
           />
-          <link rel="stylesheet" href="@public/fonts/eudoxus-sans/stylesheet" />
           {/* Inject MUI styles first to match with the prepend: true configuration. */}
           {(this.props as any).emotionStyleTags}
         </Head>
@@ -31,6 +30,15 @@ export default class MyDocument extends Document {
     );
   }
 }
+
+
+const manifest = JSON.parse(fs.readFileSync("./src/manifest.json", "utf-8"));
+const contractMetadata = JSON.parse(
+  fs.readFileSync("./src/artifacts/mintContract/metadata.json", "utf-8")
+);
+const contractABI = JSON.parse(
+  fs.readFileSync("./src/artifacts/mintContract/abi.json", "utf-8")
+);
 
 // `getInitialProps` belongs to `_document` (instead of `_app`),
 // it's compatible with static-site generation (SSG).
@@ -63,14 +71,6 @@ MyDocument.getInitialProps = async (ctx) => {
   // However, be aware that it can have global side effects.
   const cache = createEmotionCache();
   const { extractCriticalToChunks } = createEmotionServer(cache);
-
-  const manifest = JSON.parse(fs.readFileSync("./src/manifest.json", "utf-8"));
-  const contractMetadata = JSON.parse(
-    fs.readFileSync("./src/artifacts/mintContract/metadata.json", "utf-8")
-  );
-  const contractABI = JSON.parse(
-    fs.readFileSync("./src/artifacts/mintContract/abi.json", "utf-8")
-  );
 
   ctx.renderPage = () =>
     originalRenderPage({

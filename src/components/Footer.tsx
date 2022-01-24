@@ -29,7 +29,7 @@ const getNavButtons = (navItems) => {
   const buttons = Object.keys(navItems).map((navItemName) => {
     const Icon = navIcons[navItemName];
     const link = navItems[navItemName];
-    return <NavIconButton href={link} icon={<Icon />} />;
+    return <NavIconButton href={link} icon={<Icon />} key={navItemName} />;
   });
   return buttons;
 };

@@ -5,6 +5,8 @@ import { Box, useMediaQuery } from "@mui/material";
 
 import Image from "next/image";
 
+// Make a Gallery Image for each image. When mounted, begin interval looping over them,
+// setting styling. When unmounted, stop the interval.
 const MockupsGif = styled(({ images, ...props }) => {
   return (
     <Box {...props}>
@@ -31,7 +33,7 @@ const GalleryImage = styled(({ src, ...props }) => {
 
 const Gallery = styled(({ images, ...props }) => {
   const galleryImages = images.map((imagePathname: string) => (
-    <GalleryImage src={imagePathname} />
+    <GalleryImage src={imagePathname} key={imagePathname}/>
   ));
   return <Box {...props}>{galleryImages}</Box>;
 })`

@@ -3,13 +3,26 @@
 import React, { useContext } from "react";
 
 import { styled } from "@mui/material/styles";
-import { Box, Paper, Typography } from "@mui/material";
+import {
+  Box,
+  Paper,
+  Typography,
+  Button,
+  CircularProgress,
+} from "@mui/material";
 
 import ChooseQuantity, { QuantityContext } from "@components/ChooseQuantity";
-import MultiButton from "./MultiButton";
+
+import MultiButton from "@components/MultiButton";
+import PresaleMint from "@components/PresaleMint"
+
+import { useWeb3 } from "@components/Web3Connection";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const MintBox = styled((props) => {
   const { maxQuantity } = useContext(QuantityContext);
+
+  const { contract, clientAddress, isMinting, setIsMinting } = useWeb3();
 
   return (
     <Paper {...props}>
@@ -46,6 +59,7 @@ const MintBox = styled((props) => {
       <Typography className="total-minted">
         My total NFT minted (0 / {maxQuantity})
       </Typography>
+      <PresaleMint />
     </Paper>
   );
 })`
@@ -55,7 +69,7 @@ const MintBox = styled((props) => {
   flex-direction: column;
 
   .details {
-      color: ${({theme}) => theme.palette.secondary.light};
+    color: ${({ theme }) => theme.palette.secondary.light};
   }
 
   .mint-info {
@@ -81,7 +95,7 @@ const MintBox = styled((props) => {
 
   .total-minted {
     text-align: center;
-    color: ${({theme}) => theme.palette.secondary.light};
+    color: ${({ theme }) => theme.palette.secondary.light};
   }
 `;
 

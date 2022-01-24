@@ -15,30 +15,30 @@ import Footer from "@components/Footer";
 
 import DebugAuthorization from "@components/DebugAuthorization";
 
-//@ts-ignore
-const index = styled(({ manifest, contractABI, contractMetadata, mockupImages, ...props }) => {
-
-  return (
-    <Box {...props}>
-      {/* @ts-ignore */}
-      <Container id="hook">
-        <LogoLong className="logo" sx={{ mb: 1 }} />
-        <Box className="content">
-          <MockupsGallery images={mockupImages} />
-          <MintBox />
-        </Box>
-      </Container>
-      {/* <DebugAuthorization variant="contained"/> */}
-      <Team team={manifest.team} />
-      <FAQ />
-      <Footer
-        socials={manifest.socials}
-        marketplaces={manifest.marketplaces}
-        contract={contractMetadata.address}
-      />
-    </Box>
-  );
-})`
+const index = styled(
+  ({ manifest, contractABI, contractMetadata, mockupImages, ...props }) => {
+    return (
+      <Box {...props}>
+        {/* @ts-ignore */}
+        <Container id="hook">
+          <LogoLong className="logo" sx={{ mb: 1 }} />
+          <Box className="content">
+            <MockupsGallery images={mockupImages} />
+            <MintBox />
+          </Box>
+        </Container>
+        {/* <DebugAuthorization variant="contained"/> */}
+        <Team team={manifest.team} />
+        <FAQ />
+        <Footer
+          socials={manifest.socials}
+          marketplaces={manifest.marketplaces}
+          contract={contractMetadata.address}
+        />
+      </Box>
+    );
+  }
+)`
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -62,7 +62,7 @@ const index = styled(({ manifest, contractABI, contractMetadata, mockupImages, .
     }
   }
 
-  ${({theme}) => theme.breakpoints.down("lg")} {
+  ${({ theme }) => theme.breakpoints.down("lg")} {
     #hook {
       .content {
         grid-template-columns: 600px;
@@ -71,7 +71,7 @@ const index = styled(({ manifest, contractABI, contractMetadata, mockupImages, .
     }
   }
 
-  ${({theme}) => theme.breakpoints.down("md")} {
+  ${({ theme }) => theme.breakpoints.down("md")} {
     #hook {
       .content {
         grid-template-columns: 1fr;

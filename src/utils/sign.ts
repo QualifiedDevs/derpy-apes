@@ -10,13 +10,13 @@ async function sign(
   contractAddress: string,
   account: string
 ) {
-  const content = web3.utils.soliditySha3(
+  const data = web3.utils.soliditySha3(
     { t: "address", v: contractAddress },
     { t: "address", v: account }
   );
 
   const { messageHash: hash, signature } = await web3.eth.accounts.sign(
-    content,
+    data,
     privateKey
   );
 

@@ -5,7 +5,7 @@ import { sign } from "@utils";
 
 import type { NextApiRequest, NextApiResponse } from "next";
 
-type Data = {
+export type AuthData = {
   hash: string;
   signature: string;
 };
@@ -19,17 +19,21 @@ const privateKey: string = process.env.AUTHORIZATION_PRIVATE_KEY!;
 
 async function authorizePresaleMint(
   req: NextApiRequest,
-  res: NextApiResponse<Data | string>
+  res: NextApiResponse<AuthData | string>
 ) {
 
     const account: string = req.query.account;
 
     console.log("Authorization Request from Account", account)
 
+    console.log(account)
+    console.log(whitelist)
+    console.log(whitelist[account])
+
     if (!whitelist[account])
         return res.status(403).send("Account Not on Whitelist");
 
-    const message: Data = await sign(privateKey, contractAddress, account)
+    const message: AuthData = await sign(privateKey, contractAddress, account)
 
   res.status(200).json(message);
 }

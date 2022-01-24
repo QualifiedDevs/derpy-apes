@@ -109,7 +109,7 @@ const ChooseQuantity = styled((props) => {
 
 export const QuantityProvider = (props) => {
   const [quantity, setQuantity] = useState(1);
-  const [maxQuantity, setMaxQuantity] = useState(25);
+  const [maxQuantity, setMaxQuantity] = useState(3);
 
   return (
     <QuantityContext.Provider

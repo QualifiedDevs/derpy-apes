@@ -1,3 +1,8 @@
 {
-    "address": "0x21B761678ef3c858Ad24019bfD5ec685340b7c64"
+    "address": "0x8A966afd7fc98e8250e64Aa356355bB118530099",
+    "network": {
+        "name": "Rinkeby",
+        "symbol": "ETH",
+        "id": 4
+    }
 }

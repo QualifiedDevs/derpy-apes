@@ -1,16 +1,13 @@
 import axios from "axios";
 
-type Auth = {
-  hash: string;
-  signature: string;
-};
+import type { AuthData } from "@api/authorizePresaleMint";
 
 async function getMintAuth(account: string) {
-
-  let data: Auth | null = null;
+  
+  let data: AuthData | null = null;
 
   try {
-    console.log("Requesting Whitelist Authorization...")
+    console.log("Requesting Whitelist Authorization...");
     const res = await axios.get(`/api/authorizePresaleMint?account=${account}`);
     data = res.data;
     console.log("Whitelist Authorized:", data);

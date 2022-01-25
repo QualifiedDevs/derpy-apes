@@ -15,6 +15,7 @@ import ChooseQuantity, { QuantityContext } from "@components/ChooseQuantity";
 
 import MultiButton from "@components/MultiButton";
 import PresaleMint from "@components/PresaleMint"
+import FreeMint from "@components/FreeMint"
 
 import { useWeb3 } from "@components/Web3Connection";
 import { ConstructionOutlined } from "@mui/icons-material";
@@ -60,6 +61,7 @@ const MintBox = styled((props) => {
         My total NFT minted (0 / {maxQuantity})
       </Typography>
       <PresaleMint />
+      <FreeMint variant="contained" />
     </Paper>
   );
 })`

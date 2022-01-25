@@ -2,7 +2,6 @@
 
 import Web3 from "web3";
 
-//? How do I know whether this is mainnet or testnet? Is it determined here?
 const web3 = new Web3("ws://remotenode.com:8546");
 
 async function sign(

@@ -16,6 +16,10 @@ import { isClient } from "@utils";
 
 import type { AuthData } from "@api/authorizePresaleMint";
 
+import looksAbi from "@src/artifacts/erc20Payable/abi";
+import looksMetadata from "@src/artifacts/erc20Payable/metadata"
+const looksAddress = looksMetadata.address;
+
 // bool presale
 // getNftClaim
 
@@ -105,48 +109,46 @@ export const ConnectionProvider = ({ abi, contractAddress, ...props }) => {
 
   const [totalSupply, setTotalSupply] = useState(0);
 
-  // Query Metamask
+  const [looksContract, setLooksContract] = useState<any>();
+
+  // * Instantiate a contract object
   useEffect(() => {
     if (!isClient()) return;
+    const contract = new web3.eth.Contract(abi, contractAddress);
+    const looksContract = new web3.eth.Contract(looksAbi, looksAddress);
+    setContract(contract);
+    setLooksContract(looksContract);
+    console.log("Contract Initialized");
+  }, [contractAddress, abi]); //Include client's wallet address aswell
 
-    // setClientAddress()
-
-    // const ethereum = window.ethereum;
-
+  // Query Account
+  useEffect(() => {
+    if (!isClient() || !contract) return;
     (async () => {
       const accounts = await web3.eth.getAccounts();
-      //   const networkId = await ethereum.request({
-      //     method: "net_version",
-      //   });
-      console.log(accounts)
       setClientAddress(accounts[0]);
     })();
+  }, [contract]);
 
-    // ethereum.on("accountsChanged", (accounts) => {
-    //     setClientAddress(accounts[0])
-    // });
-
-    // ethereum.on("chainChanged", () => {
-    //   window.location.reload();
-    // });
-  }, []);
-
-  // * STUFF
   useEffect(() => {
-    if (!contract) return;
+    if (!isClient() || !contract) return;
+    (async () => {
+      // const res: boolean = await contract.methods.availableFreeMint(1).call();
+      //   const res: number = await contract.methods
+      //     .mintBalances(clientAddress)
+      //     .call();
+      //   console.log(res);
+    })();
+  }, [clientAddress]);
+
+  // * Initialize Contract
+  useEffect(() => {
+    if (!isClient() || !contract) return;
     (async () => {
       const res: number | null = await contract.methods.maxSupply().call();
       setTotalSupply(res || 0);
     })();
   }, [contract]);
-
-  // Instantiate a contract object
-  useEffect(() => {
-    if (!isClient()) return;
-    const contract = new web3.eth.Contract(abi, contractAddress);
-    setContract(contract);
-    console.log("Contract Initialized");
-  }, [contractAddress, abi]); //Include client's wallet address aswell
 
   useEffect(() => {
     //setSaleStage(getSaleStage())
@@ -179,6 +181,8 @@ export const ConnectionProvider = ({ abi, contractAddress, ...props }) => {
     setWhitelistAuth,
     totalSupply,
     setTotalSupply,
+    looksContract,
+    setLooksContract
 
     //? This is probably just available on contract object
   };

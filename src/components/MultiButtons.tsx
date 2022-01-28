@@ -15,7 +15,7 @@ const EthMintButton = styled(({ mintQuantity, ...props }) => {
   const {
     mintContract,
     ethPrice,
-    isPresale,
+    projectStage,
     isMinting,
     setIsMinting,
     presaleWhitelistAuth,
@@ -28,7 +28,7 @@ const EthMintButton = styled(({ mintQuantity, ...props }) => {
     setIsMinting(true);
     setIsLoading(true);
     // Mint with Quantity
-    if (isPresale) {
+    if (projectStage == 1) {
       console.log("PRESALE MINT");
       const { hash, signature } = presaleWhitelistAuth!;
 
@@ -40,13 +40,17 @@ const EthMintButton = styled(({ mintQuantity, ...props }) => {
         signature
       );
       try {
-        const gasEstimate = await contractMint.estimateGas();
+        const gasEstimate = await contractMint.estimateGas({
+          from: connectedAccounts[0],
+          value: Math.ceil(ethPrice * mintQuantity),
+        });
+
         console.log("gasEstimate", gasEstimate);
         const res = await contractMint.send({
           gasLimit: Math.floor(gasEstimate * 1.15),
           to: mintContract._address,
           from: connectedAccounts![0],
-          value: Math.ceil(30000000000000000 * mintQuantity), //TODO: PULL VALUE FROM CONTRACT
+          value: Math.ceil(ethPrice * mintQuantity), //TODO: PULL VALUE FROM CONTRACT
         });
         console.log("TRANSACTION APPROVED", res);
       } catch (err) {
@@ -57,13 +61,16 @@ const EthMintButton = styled(({ mintQuantity, ...props }) => {
 
       const contractMint = mintContract.methods.mint(false, mintQuantity);
       try {
-        const gasEstimate = await contractMint.estimateGas();
+        const gasEstimate = await contractMint.estimateGas({
+          from: connectedAccounts[0],
+          value: Math.ceil(ethPrice * mintQuantity),
+        });
         console.log("gasEstimate", gasEstimate);
         const res = await contractMint.send({
           gasLimit: Math.floor(gasEstimate * 1.15),
           to: mintContract._address,
           from: connectedAccounts![0],
-          value: Math.ceil(30000000000000000 * mintQuantity), //TODO: PULL VALUE FROM CONTRACT
+          value: Math.ceil(ethPrice * mintQuantity), //TODO: PULL VALUE FROM CONTRACT
         });
         console.log("TRANSACTION APPROVED", res);
       } catch (err) {
@@ -72,7 +79,7 @@ const EthMintButton = styled(({ mintQuantity, ...props }) => {
     }
     setIsLoading(false);
     setIsMinting(false);
-  }, [mintQuantity, isPresale, mintContract, ethPrice]);
+  }, [mintQuantity, projectStage, mintContract, ethPrice]);
 
   return (
     <Button onClick={mint} disabled={isLoading || isMinting} {...props}>
@@ -103,47 +110,57 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
     mintContract,
     looksContract,
     looksPrice,
-    isPresale,
+    projectStage,
     isMinting,
     setIsMinting,
     presaleWhitelistAuth,
     connectedAccounts,
     looksBalanceApproved,
+    setLooksBalanceApproved
   } = useWeb3();
 
   const approveSpending = async () => {
-
-    if (looksBalanceApproved > 18 * mintQuantity) return;
+    if (looksBalanceApproved >= looksPrice * mintQuantity) return;
+    setIsLoading(true)
 
     // * Something wrong with method instance?
+    // ! This isn't working!
     const approve = looksContract.methods.approve(
       mintContract._address,
-      Math.ceil(18 * mintQuantity)
+      Math.ceil(looksPrice * 50).toString()
     );
 
     try {
-      console.log("estimating gas...");
-      //! estimateGas Transaction Fails
-      const gasEstimate = await approve.estimateGas();
+      const gasEstimate = await approve.estimateGas({
+        from: connectedAccounts[0],
+      });
+
       console.log("gas estimate:", gasEstimate);
 
       const res = await approve.send({
-        gasLimit: Math.floor(gasEstimate * 1.15),
+        gasLimit: Math.floor(gasEstimate * 3),
         to: looksContract._address,
         from: connectedAccounts[0],
       });
+
+      const newBalance = await await looksContract.methods.allowance(
+        connectedAccounts[0],
+        mintContract._address
+      );
+      setLooksBalanceApproved(newBalance);
+      // !prompt balance update
     } catch (err) {
-        console.error("Gas Estimate Failed", err)
+      console.error("Gas Estimate Failed", err);
     }
+    setIsLoading(false);
   };
 
   const mint = useCallback(async () => {
     setIsMinting(true);
     setIsLoading(true);
     // Mint with Quantity
-    if (isPresale) {
+    if (projectStage == 1) {
       console.log("PRESALE MINT");
-      await approveSpending();
       const { hash, signature } = presaleWhitelistAuth!;
       const contractMint = mintContract.methods.presaleMint(
         true,
@@ -152,7 +169,9 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
         signature
       );
       try {
-        const gasEstimate = await contractMint.estimateGas();
+        const gasEstimate = await contractMint.estimateGas({
+          from: connectedAccounts[0],
+        });
         console.log("gasEstimate", gasEstimate);
         const res = await contractMint.send({
           gasLimit: Math.floor(gasEstimate * 1.15),
@@ -165,10 +184,11 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
       }
     } else {
       console.log("PUBLIC MINT");
-      await approveSpending();
       const contractMint = mintContract.methods.mint(true, mintQuantity);
       try {
-        const gasEstimate = await contractMint.estimateGas();
+        const gasEstimate = await contractMint.estimateGas({
+          from: connectedAccounts[0],
+        });
         console.log("gasEstimate", gasEstimate);
         const res = await contractMint.send({
           gasLimit: Math.floor(gasEstimate * 1.15),
@@ -184,7 +204,7 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
     setIsMinting(false);
   }, [
     mintQuantity,
-    isPresale,
+    projectStage,
     mintContract,
     looksContract,
     looksBalanceApproved,
@@ -193,17 +213,25 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
   ]);
 
   return (
-    <Button onClick={mint} disabled={isLoading || isMinting} {...props}>
+    <Button
+      onClick={
+        looksBalanceApproved < looksPrice * mintQuantity
+          ? approveSpending
+          : mint
+      }
+      disabled={isLoading || isMinting}
+      {...props}
+    >
       {isMinting ? (
         isLoading ? (
           <CircularProgress size="1.5em" />
         ) : (
           "Waiting..."
         )
-      ) : looksBalanceApproved < 18 ? (
-        "Approve $LOOKS"
+      ) : looksBalanceApproved < mintQuantity * looksPrice ? (
+        `Approve $LOOKS`
       ) : (
-        "Mint with $LOOKS"
+        `Mint with $LOOKS`
       )}
     </Button>
   );

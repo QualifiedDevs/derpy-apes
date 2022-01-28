@@ -79,6 +79,10 @@ export type Web3ContextValues = {
 
   maxPerTxn?: number;
   setMaxPerTxn?: React.Dispatch<number>;
+
+  //TODO: Convert to enum
+  projectStage?: number;
+  setProjectStage?: React.Dispatch<number>;
 };
 
 const defaultContext: Web3ContextValues = {
@@ -115,7 +119,6 @@ export default function Web3Provider(props: any) {
   const [freeMintAvailable, setFreeMintAvailable] = useState(
     defaultContext.freeMintAvailable
   );
-  const [isPresale, setIsPresale] = useState(defaultContext.isPresale);
   const [maxSupply, setMaxSupply] = useState(defaultContext.maxSupply);
   const [totalSupply, setTotalSupply] = useState(defaultContext.totalSupply);
   const [ethPrice, setEthPrice] = useState(defaultContext.ethPrice);
@@ -127,6 +130,16 @@ export default function Web3Provider(props: any) {
   const [looksBalanceApproved, setLooksBalanceApproved] = useState<number>(
     defaultContext.looksBalanceApproved
   );
+  const [projectStage, setProjectStage] = useState<number>(
+    defaultContext.mintStage
+  );
+  useEffect(() => {
+    if (!isClient() || !connected || !mintContract) return;
+    (async () => {
+      const res = await mintContract.methods.avaliableFreeMint(3, connectedAccounts[0]).call()
+      setFreeMintAvailable(res);
+    })()
+  },[mintContract, isMinting, connectedAccounts])
 
   //* MIDDLEWARE FOR STATE CHANGES
 
@@ -172,14 +185,31 @@ export default function Web3Provider(props: any) {
   }, [provider]);
 
   useEffect(() => {
+    //? What stats require a provider, which are readonly?
+    // if (!isClient()) return;
+    // setMintContract(
+    //   new web3.eth.Contract(mintAbi, mintContractMetadata.address)
+    // );
+    // setLooksContract(
+    //   new web3.eth.Contract(looksAbi, looksContractMetadata.address)
+    // );
+  }, [provider]);
+
+  useEffect(() => {
     if (!isClient() || !mintContract) return;
     (async () => {
-      const isPresale = await mintContract.methods.isPresale().call();
-      setIsPresale(isPresale);
+      const projectStage = await mintContract.methods.projectStage().call();
+      setProjectStage(parseInt(projectStage));  //? why is this a string?
+      // setProjectStage(2)
+      console.log("projectStage", projectStage)
       const maxSupply = await mintContract.methods.maxSupply().call();
       setMaxSupply(maxSupply);
       const totalSupply = await mintContract.methods.totalSupply().call();
       setTotalSupply(totalSupply);
+      const ethPrice = await mintContract.methods.Ethcost().call();
+      setEthPrice(ethPrice);
+      const looksPrice = await mintContract.methods.LooksCost().call();
+      setLooksPrice(looksPrice);
     })();
   }, [mintContract]);
 
@@ -251,7 +281,6 @@ export default function Web3Provider(props: any) {
     setIsMinting,
     freeMintWhitelistAuth,
     presaleWhitelistAuth,
-    isPresale,
     maxSupply,
     totalSupply,
     setTotalSupply,
@@ -261,6 +290,7 @@ export default function Web3Provider(props: any) {
     looksPrice,
     accountNFTsMinted,
     looksBalanceApproved,
+    projectStage
   };
 
   return <Web3Context.Provider value={context} {...props} />;

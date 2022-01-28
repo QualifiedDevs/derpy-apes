@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import React, {useCallback} from "react"
 import { styled } from "@mui/material/styles";
 import { Button, CircularProgress } from "@mui/material";
@@ -20,7 +22,7 @@ const FreeMint = styled((props) => {
     const { hash, signature } = freeMintWhitelistAuth!;
     const contractMint = mintContract.methods.freeMint(3, hash, signature);
     try {
-      const gasEstimate = await contractMint.estimateGas();
+      const gasEstimate = await contractMint.estimateGas()
       console.log("gasEstimate", gasEstimate);
       const res = await contractMint.send({
         gasLimit: Math.floor(gasEstimate * 1.15),
@@ -37,15 +39,15 @@ const FreeMint = styled((props) => {
   return (
     <Button
       onClick={mint}
-      disabled={!freeMintWhitelistAuth || isMinting}
+      disabled={!freeMintWhitelistAuth || isMinting || !freeMintAvailable}
       {...props}
       variant="contained"
     >
-      {freeMintWhitelistAuth === undefined
+      {freeMintAvailable? freeMintWhitelistAuth === undefined
         ? "Requesting Free Mint Whitelist..."
         : freeMintWhitelistAuth
         ? "Mint 3 Free"
-        : "Free Mint Whitelist Unavailable"}
+        : "Free Mint Whitelist Unavailable" : "Free Mints Exceeded"}
     </Button>
   );
 })`

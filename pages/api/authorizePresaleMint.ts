@@ -38,10 +38,6 @@ async function authorizePresaleMint(
 
   console.log(`Auth requested for stage ${stage} from account ${account}`);
 
-  const isWhitelisted = whitelist[account];
-
-  console.log(isWhitelisted);
-
   if (!whitelist[account])
     return res.status(403).send("Account Not on Whitelist");
 

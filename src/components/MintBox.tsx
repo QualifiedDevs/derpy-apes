@@ -19,13 +19,19 @@ import MultiButton from "@components/MultiButtons";
 
 import useWeb3 from "@hooks/useWeb3";
 
-import manifest from "@src/manifest.json"
-const isFreeMint = manifest.mintingDetails.freeMint;
-
 const MintBox = styled((props) => {
   const { maxQuantity } = useContext(QuantityContext);
 
-  const { connected, presaleWhitelistAuth, maxSupply, totalSupply, maxPerTxn } = useWeb3();
+  const {
+    connected,
+    presaleWhitelistAuth,
+    maxSupply,
+    totalSupply,
+    maxPerTxn,
+    projectStage,
+    ethPrice,
+    looksPrice,
+  } = useWeb3();
 
   return (
     <Paper {...props}>
@@ -44,35 +50,68 @@ const MintBox = styled((props) => {
       </Typography> */}
       <Paper className="mint-info" elevation={1} sx={{ mb: 1.5 }}>
         <Typography className="key">NFT Minted</Typography>
-        <Typography className="value">{totalSupply || "... "}/{maxSupply || " ..."}</Typography>
+        <Typography className="value">
+          {totalSupply || "... "}/{maxSupply || " ..."}
+        </Typography>
       </Paper>
       <Paper className="mint-info" elevation={1} sx={{ mb: 2.5 }}>
         <Typography className="key">Price</Typography>
-        <Typography className="value">0.039 Ξ</Typography>
+        <Typography className="value">
+          {ethPrice / 100000000000000000} Ξ
+        </Typography>
       </Paper>
-      {connected ? isFreeMint? <FreeMint variant="contained"/> : (
-        presaleWhitelistAuth ? (
-          <Box className="connected-content">
-            <ChooseQuantity
-              className="choose-quantity"
-              sx={{ mt: "auto", mb: 1.5 }}
-            />
-            <MultiButton
-              variant="contained"
-              className="multi-button"
-              sx={{ mb: 2 }}
-            />
-          </Box>
-        ) : (
-          <Paper className="presale-authorization" sx={{mb: 2}}>
-            {presaleWhitelistAuth === undefined
-              ? "Accessing Whitelist..."
-              : "Wallet Not Whitelisted"}
-          </Paper>
-        )
+
+      {connected ? (
+        (() => {
+          switch (projectStage) {
+            case 0:
+              return <FreeMint variant="contained" />;
+            case 1:
+              return presaleWhitelistAuth ? (
+                <Box className="connected-content">
+                  <ChooseQuantity
+                    className="choose-quantity"
+                    sx={{ mt: "auto", mb: 1.5 }}
+                  />
+                  <MultiButton
+                    variant="contained"
+                    className="multi-button"
+                    sx={{ mb: 2 }}
+                  />
+                </Box>
+              ) : (
+                <Paper className="presale-authorization" sx={{ mb: 2 }}>
+                  {presaleWhitelistAuth === undefined
+                    ? "Accessing Whitelist..."
+                    : "Wallet Not Whitelisted"}
+                </Paper>
+              );
+            case 2:
+              return (
+                <Box className="connected-content">
+                  <ChooseQuantity
+                    className="choose-quantity"
+                    sx={{ mt: "auto", mb: 1.5 }}
+                  />
+                  <MultiButton
+                    variant="contained"
+                    className="multi-button"
+                    sx={{ mb: 2 }}
+                  />
+                </Box>
+              );
+            default:
+              return "undefined";
+          }
+        })()
       ) : (
-        <ConnectWallet variant="contained" className="connect-button" sx={{mb: 2}}/>
+        <ConnectWallet
+          variant="contained"
+          className="connect-button"
+          sx={{ mb: 2 }}
+        />
       )}
+
       {/* <Typography className="total-minted">
         My total NFT minted (0 / {maxQuantity})
       </Typography> */}

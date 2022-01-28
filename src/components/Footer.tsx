@@ -9,6 +9,8 @@ import discord from "@src/vector-graphics/socials/discord";
 import twitter from "@src/vector-graphics/socials/twitter";
 import opensea from "@src/vector-graphics/marketplaces/opensea";
 
+import contractMetadata from "@src/artifacts/mintContract/metadata"
+
 const navIcons = {
   discord,
   twitter,
@@ -34,14 +36,14 @@ const getNavButtons = (navItems) => {
   return buttons;
 };
 
-const ContractLookup = styled(({ contract, ...props }) => {
+const ContractLookup = styled((props) => {
   return (
     <Button
       component="a"
-      href={`https://etherscan.io/address/${contract}`}
+      href={`https://etherscan.io/address/${contractMetadata.address}`}
       {...props}
     >
-      {`${contract.slice(0,13)}...${contract.slice(-13)}`}
+      {`${contractMetadata.address.slice(0,13)}...${contractMetadata.address.slice(-13)}`}
     </Button>
   );
 })``;

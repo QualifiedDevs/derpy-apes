@@ -111,34 +111,30 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
     looksBalanceApproved,
   } = useWeb3();
 
-  // whitelistAuth vs public sale
-
   const approveSpending = async () => {
 
-    console.log(looksBalanceApproved)
     if (looksBalanceApproved > 18 * mintQuantity) return;
 
-    console.log(mintContract._address, connectedAccounts[0])
-    console.log(connectedAccounts[0])
+    // * Something wrong with method instance?
     const approve = looksContract.methods.approve(
       mintContract._address,
-      Math.ceil(18 * mintQuantity) //TODO: to bignumber
+      Math.ceil(18 * mintQuantity)
     );
 
     try {
-      console.log("estimating gas");
-      //? WHY can't I get this gas estimate?
-
+      console.log("estimating gas...");
+      //! estimateGas Transaction Fails
       const gasEstimate = await approve.estimateGas();
-
-      console.log("gas", gasEstimate);
+      console.log("gas estimate:", gasEstimate);
 
       const res = await approve.send({
         gasLimit: Math.floor(gasEstimate * 1.15),
         to: looksContract._address,
         from: connectedAccounts[0],
       });
-    } catch (err) {}
+    } catch (err) {
+        console.error("Gas Estimate Failed", err)
+    }
   };
 
   const mint = useCallback(async () => {

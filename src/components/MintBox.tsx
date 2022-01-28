@@ -13,17 +13,17 @@ import {
 
 import ChooseQuantity, { QuantityContext } from "@components/ChooseQuantity";
 
-import MultiButton from "@components/MultiButton";
-import PresaleMint from "@components/PresaleMint"
-import FreeMint from "@components/FreeMint"
+import ConnectWallet from "@components/ConnectWallet";
+import FreeMint from "@components/FreeMint";
+import MultiButton from "@components/MultiButtons";
 
-import { useWeb3 } from "@components/Web3Connection";
+import useWeb3 from "@hooks/useWeb3";
 import { ConstructionOutlined } from "@mui/icons-material";
 
 const MintBox = styled((props) => {
   const { maxQuantity } = useContext(QuantityContext);
 
-  const { contract, clientAddress, isMinting, setIsMinting } = useWeb3();
+  const { connected, presaleWhitelistAuth, maxSupply, totalSupply, maxPerTxn } = useWeb3();
 
   return (
     <Paper {...props}>
@@ -32,36 +32,48 @@ const MintBox = styled((props) => {
         mortal apes dissected through the organs. Explore what your ape is
         really made of inside out.
       </Typography>
-      <Typography>
+      {/* <Typography>
         First <b>800 FREE</b>{" "}
         <span className="details">(max. 1 NFT / tx.)</span>
       </Typography>
       <Typography sx={{ mb: 2 }}>
         Then <b>0.039 Ξ each</b>{" "}
         <span className="details">(max. {maxQuantity} NFT / tx.)</span>
-      </Typography>
+      </Typography> */}
       <Paper className="mint-info" elevation={1} sx={{ mb: 1.5 }}>
         <Typography className="key">NFT Minted</Typography>
-        <Typography className="value">8,000/8,000</Typography>
+        <Typography className="value">{totalSupply || "... "}/{maxSupply || " ..."}</Typography>
       </Paper>
       <Paper className="mint-info" elevation={1} sx={{ mb: 2.5 }}>
         <Typography className="key">Price</Typography>
         <Typography className="value">0.039 Ξ</Typography>
       </Paper>
-      <ChooseQuantity
-        className="choose-quantity"
-        sx={{ mt: "auto", mb: 1.5 }}
-      />
-      <MultiButton
-        variant="contained"
-        className="multi-button"
-        sx={{ mb: 2 }}
-      />
-      <Typography className="total-minted">
+      {connected ? (
+        presaleWhitelistAuth ? (
+          <Box className="connected-content">
+            <ChooseQuantity
+              className="choose-quantity"
+              sx={{ mt: "auto", mb: 1.5 }}
+            />
+            <MultiButton
+              variant="contained"
+              className="multi-button"
+              sx={{ mb: 2 }}
+            />
+          </Box>
+        ) : (
+          <Paper className="presale-authorization" sx={{mb: 2}}>
+            {presaleWhitelistAuth === undefined
+              ? "Loading..."
+              : "Whitelist Denied"}
+          </Paper>
+        )
+      ) : (
+        <ConnectWallet variant="contained" className="connect-button" sx={{mb: 2}}/>
+      )}
+      {/* <Typography className="total-minted">
         My total NFT minted (0 / {maxQuantity})
-      </Typography>
-      <PresaleMint />
-      <FreeMint variant="contained" />
+      </Typography> */}
     </Paper>
   );
 })`
@@ -90,9 +102,21 @@ const MintBox = styled((props) => {
   .choose-quantity {
   }
 
-  .multi-button {
-    width: 100%;
-    padding: 1rem;
+  .connect-button {
+    padding: 1.25em;
+  }
+
+  .connected-content {
+  }
+
+  .presale-authorization {
+    background: ${({ theme }) => theme.palette.primary.dark};
+    padding: 1.5em;
+    text-align: center;
+    font-size: 1em;
+    font-weight: semi-bold;
+    text-transform: uppercase;
+    color: #ffffff;
   }
 
   .total-minted {

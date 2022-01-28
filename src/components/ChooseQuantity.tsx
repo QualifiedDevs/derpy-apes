@@ -7,7 +7,6 @@ import { Box, Typography, IconButton, TextField } from "@mui/material";
 
 import Add from "@mui/icons-material/Add";
 import Remove from "@mui/icons-material/Remove";
-import { ConnectingAirportsOutlined } from "@mui/icons-material";
 
 // Max quantity varies depending on context...
 // I can set it whenever they connect a wallet.

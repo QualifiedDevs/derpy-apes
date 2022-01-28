@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import React, { useEffect, useState } from "react";
 
 import { styled } from "@mui/material/styles";
@@ -33,7 +35,7 @@ const LooksButton = styled((props) => {
     })();
   }, [clientAddress, contract, looksContract, isLoading]);
 
-  const mintPrice = 18; //* How do I get # Looks? This can just be constant * numMint
+  const mintPrice = 18;
 
   return (
     <Button

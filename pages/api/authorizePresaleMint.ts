@@ -10,26 +10,39 @@ export type AuthData = {
   signature: string;
 };
 
-const contractMetadata = JSON.parse(fs.readFileSync("./src/artifacts/mintContract/metadata.json", "utf-8"))
-const contractAddress: string = contractMetadata.address;
+export enum authStage {
+  FREE_MINT = 0,
+  PRESALE,
+}
 
-const whitelist = JSON.parse(fs.readFileSync("./src/whitelist.json", "utf-8"));
+import mintContractMetadata from "@src/artifacts/mintContract/metadata"
 
-const privateKey: string = process.env.AUTHORIZATION_PRIVATE_KEY!;
+const privateKeys: string[] = [
+  process.env.FREE_MINT_PRIVATE_KEY,
+  process.env.PRESALE_AUTH_PRIVATE_KEY,
+];
+
+import freeMintWhitelist from "@src/freeMintWhitelist.json";
+import presaleWhitelist from "@src/presaleWhitelist.json";
+
+const whitelists: object[] = [freeMintWhitelist, presaleWhitelist];
 
 async function authorizePresaleMint(
   req: NextApiRequest,
   res: NextApiResponse<AuthData | string>
 ) {
 
-    const account: string = req.query.account;
+  const { account, stage } = req.query;
 
-    console.log("Authorization Request from Account", account)
+  const privateKey = privateKeys[stage];
+  const whitelist = whitelists[stage];
 
-    if (!whitelist[account])
-        return res.status(403).send("Account Not on Whitelist");
+  console.log(`Auth for stage ${stage} from account ${account}`);
 
-    const message: AuthData = await sign(privateKey, contractAddress, account)
+  if (!whitelist[account])
+    return res.status(403).send("Account Not on Whitelist");
+
+  const message: AuthData = await sign(privateKey, mintContractMetadata.address, account);
 
   res.status(200).json(message);
 }

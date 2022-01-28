@@ -1,6 +1,5 @@
 //@ts-nocheck
 
-import * as fs from "fs";
 import { sign } from "@utils";
 
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -15,10 +14,10 @@ export enum authStage {
   PRESALE,
 }
 
-import mintContractMetadata from "@src/artifacts/mintContract/metadata"
+import mintContractMetadata from "@src/artifacts/mintContract/metadata";
 
 const privateKeys: string[] = [
-  process.env.FREE_MINT_PRIVATE_KEY,
+  process.env.FREE_MINT_AUTH_PRIVATE_KEY,
   process.env.PRESALE_AUTH_PRIVATE_KEY,
 ];
 
@@ -37,12 +36,20 @@ async function authorizePresaleMint(
   const privateKey = privateKeys[stage];
   const whitelist = whitelists[stage];
 
-  console.log(`Auth for stage ${stage} from account ${account}`);
+  console.log(`Auth requested for stage ${stage} from account ${account}`);
+
+  const isWhitelisted = whitelist[account];
+
+  console.log(isWhitelisted);
 
   if (!whitelist[account])
     return res.status(403).send("Account Not on Whitelist");
 
-  const message: AuthData = await sign(privateKey, mintContractMetadata.address, account);
+  const message: AuthData = await sign(
+    privateKey,
+    mintContractMetadata.address,
+    account
+  );
 
   res.status(200).json(message);
 }

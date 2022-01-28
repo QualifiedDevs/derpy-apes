@@ -1,12 +1,62 @@
-import {styled} from '@mui/material/styles';
-import {Button} from '@mui/material';
+import React, {useCallback} from "react"
+import { styled } from "@mui/material/styles";
+import { Button, CircularProgress } from "@mui/material";
+
+import useWeb3 from "@hooks/useWeb3";
 
 const FreeMint = styled((props) => {
-    return (
-        <Button {...props}>
-            Mint
-        </Button>
-    );
-})``;
+  const {
+    mintContract,
+    freeMintAvailable,
+    freeMintWhitelistAuth,
+    isMinting,
+    setIsMinting,
+    connectedAccounts,
+  } = useWeb3();
+
+  const mint = async () => {
+    console.log("FREE MINT");
+    setIsMinting(true);
+    const { hash, signature } = freeMintWhitelistAuth!;
+    const contractMint = mintContract.methods.freeMint(3, hash, signature);
+    try {
+      const gasEstimate = await contractMint.estimateGas();
+      console.log("gasEstimate", gasEstimate);
+      const res = await contractMint.send({
+        gasLimit: Math.floor(gasEstimate * 1.15),
+        to: mintContract._address,
+        from: connectedAccounts[0],
+      });
+      console.log(res);
+    } catch (err) {
+      console.error(err);
+    }
+    setIsMinting(false);
+  };
+
+  return (
+    <Button
+      onClick={mint}
+      disabled={!freeMintWhitelistAuth || isMinting}
+      {...props}
+      variant="contained"
+    >
+      {freeMintWhitelistAuth === undefined
+        ? "Requesting Free Mint Whitelist..."
+        : freeMintWhitelistAuth
+        ? "Mint 3 Free"
+        : "Free Mint Whitelist Unavailable"}
+    </Button>
+  );
+})`
+  padding: 1.5em;
+  .MuiCircularProgress-root {
+    color: white;
+  }
+
+  &.Mui-disabled {
+    background: ${({ theme }) => theme.palette.primary.dark};
+  }
+`;
 
 export default FreeMint;

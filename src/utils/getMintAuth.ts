@@ -10,9 +10,9 @@ async function getMintAuth(account: string, stage: authStage) {
     console.log("Requesting Whitelist Authorization...");
     const res = await axios.get(`/api/authorizePresaleMint?account=${account}&stage=${stage}`);
     data = res.data;
-    console.log("Whitelist Authorized:", data);
+    console.log("WHITELIST AUTHORIZED", data);
   } catch (err) {
-    console.error("Whitelist Denied");
+    console.error("WHITELIST DENIED", err);
   }
 
   return data;

@@ -28,10 +28,11 @@ const EthMintButton = styled(({ mintQuantity, ...props }) => {
     setIsMinting(true);
     setIsLoading(true);
     // Mint with Quantity
-    console.log(isPresale);
     if (isPresale) {
       console.log("PRESALE MINT");
       const { hash, signature } = presaleWhitelistAuth!;
+
+      console.log(false, mintQuantity, hash, signature);
       const contractMint = mintContract.methods.presaleMint(
         false,
         mintQuantity,
@@ -43,9 +44,9 @@ const EthMintButton = styled(({ mintQuantity, ...props }) => {
         console.log("gasEstimate", gasEstimate);
         const res = await contractMint.send({
           gasLimit: Math.floor(gasEstimate * 1.15),
-          to: mintContract.__address,
+          to: mintContract._address,
           from: connectedAccounts![0],
-          value: 30000000000000000 * mintQuantity, //TODO: PULL VALUE FROM CONTRACT
+          value: Math.ceil(30000000000000000 * mintQuantity), //TODO: PULL VALUE FROM CONTRACT
         });
         console.log("TRANSACTION APPROVED", res);
       } catch (err) {
@@ -60,9 +61,9 @@ const EthMintButton = styled(({ mintQuantity, ...props }) => {
         console.log("gasEstimate", gasEstimate);
         const res = await contractMint.send({
           gasLimit: Math.floor(gasEstimate * 1.15),
-          to: mintContract.__address,
+          to: mintContract._address,
           from: connectedAccounts![0],
-          value: 30000000000000000 * mintQuantity, //TODO: PULL VALUE FROM CONTRACT
+          value: Math.ceil(30000000000000000 * mintQuantity), //TODO: PULL VALUE FROM CONTRACT
         });
         console.log("TRANSACTION APPROVED", res);
       } catch (err) {
@@ -113,38 +114,43 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
   // whitelistAuth vs public sale
 
   const approveSpending = async () => {
+
+    console.log(looksBalanceApproved)
     if (looksBalanceApproved > 18 * mintQuantity) return;
+
+    console.log(mintContract._address, connectedAccounts[0])
+    console.log(connectedAccounts[0])
+    const approve = looksContract.methods.approve(
+      mintContract._address,
+      Math.ceil(18 * mintQuantity) //TODO: to bignumber
+    );
+
     try {
-      // const allowance = await looksContract.methods.allowance(
-      //     connectedAccounts[0],
-      //     mintContract._address
-      //   ).call();
-      const approve = looksContract.methods.approve(
-        mintContract._address,
-        Math.ceil(18 * mintQuantity) //TODO: to bignumber
-      );
+      console.log("estimating gas");
+      //? WHY can't I get this gas estimate?
+
       const gasEstimate = await approve.estimateGas();
+
+      console.log("gas", gasEstimate);
+
       const res = await approve.send({
         gasLimit: Math.floor(gasEstimate * 1.15),
         to: looksContract._address,
         from: connectedAccounts[0],
       });
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   const mint = useCallback(async () => {
     setIsMinting(true);
     setIsLoading(true);
     // Mint with Quantity
-    console.log(isPresale);
     if (isPresale) {
       console.log("PRESALE MINT");
       await approveSpending();
       const { hash, signature } = presaleWhitelistAuth!;
       const contractMint = mintContract.methods.presaleMint(
-        false,
+        true,
         mintQuantity,
         hash,
         signature
@@ -154,9 +160,8 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
         console.log("gasEstimate", gasEstimate);
         const res = await contractMint.send({
           gasLimit: Math.floor(gasEstimate * 1.15),
-          to: mintContract.__address,
+          to: mintContract._address,
           from: connectedAccounts![0],
-          value: 30000000000000000 * mintQuantity, //TODO: PULL VALUE FROM CONTRACT
         });
         console.log("TRANSACTION APPROVED", res);
       } catch (err) {
@@ -165,7 +170,7 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
     } else {
       console.log("PUBLIC MINT");
       await approveSpending();
-      const contractMint = mintContract.methods.mint(false, mintQuantity);
+      const contractMint = mintContract.methods.mint(true, mintQuantity);
       try {
         const gasEstimate = await contractMint.estimateGas();
         console.log("gasEstimate", gasEstimate);
@@ -173,7 +178,6 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
           gasLimit: Math.floor(gasEstimate * 1.15),
           to: mintContract.__address,
           from: connectedAccounts![0],
-          value: 30000000000000000 * mintQuantity, //TODO: PULL VALUE FROM CONTRACT
         });
         console.log("TRANSACTION APPROVED", res);
       } catch (err) {
@@ -221,20 +225,19 @@ const MultiButton = styled((props) => {
   const { quantity } = useContext(QuantityContext);
 
   return (
-    <Box {...props} sx={{mt: 4}}>
-      <EthMintButton mintquantity={quantity} variant="contained" />
-      <LooksMintButton mintquantity={quantity} variant="contained" />
+    <Box {...props} sx={{ mt: 4 }}>
+      <EthMintButton mintQuantity={quantity} variant="contained" />
+      <LooksMintButton mintQuantity={quantity} variant="contained" />
     </Box>
   );
 })`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 1em;
 
-display: grid;
-grid-template-columns: 1fr 1fr;
-grid-column-gap: 1em;
-
-.MuiButton-root {
+  .MuiButton-root {
     padding: 1em;
-}
+  }
 `;
 
 export default MultiButton;

@@ -9,11 +9,8 @@ import React, {
 } from "react";
 
 import Web3 from "web3";
-import Web3Modal from "web3modal";
 
-import WalletConnect from "@walletconnect/web3-provider";
-
-import { getMintAuth, isClient } from "@utils";
+import { getMintAuth, isClient, mapToChecksum } from "@utils";
 
 import type { AuthData } from "@api/authorizePresaleMint";
 
@@ -21,8 +18,6 @@ import mintAbi from "@src/artifacts/mintContract/abi.json";
 import mintContractMetadata from "@src/artifacts/mintContract/metadata.json";
 import looksAbi from "@src/artifacts/erc20Payable/abi.json";
 import looksContractMetadata from "@src/artifacts/erc20Payable/metadata.json";
-
-import { web3Modal } from "@utils/web3Modal";
 
 import { authStage } from "@api/authorizePresaleMint";
 
@@ -129,13 +124,15 @@ export default function Web3Provider(props: any) {
     number | undefined
   >(defaultContext.accountNFTsMinted);
   const [maxPerTxn, setMaxPerTxn] = useState<number>(defaultContext.maxPerTxn);
-  const [looksBalanceApproved, setLooksBalanceApproved] = useState<number>(defaultContext.looksBalanceApproved)
+  const [looksBalanceApproved, setLooksBalanceApproved] = useState<number>(
+    defaultContext.looksBalanceApproved
+  );
 
   //* MIDDLEWARE FOR STATE CHANGES
 
   // useEffect(() => {
   //   if (!isClient()) return;
-    
+
   // }, [])
 
   useEffect(() => {
@@ -153,13 +150,11 @@ export default function Web3Provider(props: any) {
     // TODO: Make sure this shit ain't broken!
     (async () => {
       const accounts = await web3.eth.getAccounts();
-      //! HOW IS THIS GETTING METAMASK?
-      console.log("ACCOUNTS", accounts);
-      setConnectedAccounts(accounts);
+      setConnectedAccounts(accounts ? mapToChecksum(accounts) : accounts);
     })();
 
     provider.on("accountsChanged", (accounts: string[]) => {
-      setConnectedAccounts(accounts);
+      setConnectedAccounts(accounts ? mapToChecksum(accounts) : accounts);
     });
 
     provider.on("chainChanged", (chainId: number) => {
@@ -167,12 +162,10 @@ export default function Web3Provider(props: any) {
     });
 
     provider.on("connect", (info: { chainId: number }) => {
-      console.log("CONNECT", info);
       setChainId(info.chainId);
     });
 
     provider.on("disconnect", (err: { code: number; message: string }) => {
-      console.log("DISCONNECT", err);
       web3.setProvider("wss://localhost:8546");
       setConnected(false);
     });
@@ -180,17 +173,25 @@ export default function Web3Provider(props: any) {
 
   useEffect(() => {
     if (!isClient() || !mintContract) return;
-    //! Set all static data
-    console.log("HANDLING SYNCHRONOUS DATA");
     (async () => {
-      const presaleRes = await mintContract.methods.isPresale().call();
-      setIsPresale(presaleRes);
+      const isPresale = await mintContract.methods.isPresale().call();
+      setIsPresale(isPresale);
       const maxSupply = await mintContract.methods.maxSupply().call();
       setMaxSupply(maxSupply);
       const totalSupply = await mintContract.methods.totalSupply().call();
       setTotalSupply(totalSupply);
     })();
   }, [mintContract]);
+
+  useEffect(() => {
+    if (!isClient || !looksContract || !connected || !connectedAccounts) return;
+    (async () => {
+      const looksBalanceApproved = await looksContract.methods
+        .allowance(connectedAccounts[0], mintContract._address)
+        .call();
+      setLooksBalanceApproved(looksBalanceApproved);
+    })();
+  }, [looksContract, mintContract, connectedAccounts, connected]);
 
   useEffect(() => {
     if (!isClient()) return;
@@ -202,7 +203,7 @@ export default function Web3Provider(props: any) {
       if (!accountConnected) return setFreeMintWhitelistAuth(undefined);
       let auth;
       try {
-        auth = await getMintAuth(connectedAccounts[0], authStage.FREE_MINT);
+        auth = await getMintAuth(connectedAccounts[0], authStage.FREE_MINT); //? WHY IS IT GIVING WRONG ACCOUNT/
         console.log("WHITELIST AUTHORIZED", auth);
       } catch (err) {
         auth = null;
@@ -259,7 +260,7 @@ export default function Web3Provider(props: any) {
     ethPrice,
     looksPrice,
     accountNFTsMinted,
-    looksBalanceApproved
+    looksBalanceApproved,
   };
 
   return <Web3Context.Provider value={context} {...props} />;

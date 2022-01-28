@@ -13,7 +13,7 @@ async function sign(
     { t: "address", v: contractAddress },
     { t: "address", v: account }
   );
-
+  
   const { messageHash: hash, signature } = await web3.eth.accounts.sign(
     data,
     privateKey
@@ -23,3 +23,5 @@ async function sign(
 }
 
 export default sign;
+
+//! err probably in here, presumable with wss connection

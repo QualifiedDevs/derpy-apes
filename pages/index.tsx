@@ -13,8 +13,6 @@ import Team from "@components/Team";
 import FAQ from "@components/FAQ";
 import Footer from "@components/Footer";
 
-import DebugAuthorization from "@components/DebugAuthorization";
-
 const index = styled(
   ({ manifest, contractABI, contractMetadata, mockupImages, ...props }) => {
     return (

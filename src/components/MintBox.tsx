@@ -18,7 +18,9 @@ import FreeMint from "@components/FreeMint";
 import MultiButton from "@components/MultiButtons";
 
 import useWeb3 from "@hooks/useWeb3";
-import { ConstructionOutlined } from "@mui/icons-material";
+
+import manifest from "@src/manifest.json"
+const isFreeMint = manifest.mintingDetails.freeMint;
 
 const MintBox = styled((props) => {
   const { maxQuantity } = useContext(QuantityContext);
@@ -48,7 +50,7 @@ const MintBox = styled((props) => {
         <Typography className="key">Price</Typography>
         <Typography className="value">0.039 Ξ</Typography>
       </Paper>
-      {connected ? (
+      {connected ? isFreeMint? <FreeMint variant="contained"/> : (
         presaleWhitelistAuth ? (
           <Box className="connected-content">
             <ChooseQuantity
@@ -64,8 +66,8 @@ const MintBox = styled((props) => {
         ) : (
           <Paper className="presale-authorization" sx={{mb: 2}}>
             {presaleWhitelistAuth === undefined
-              ? "Loading..."
-              : "Whitelist Denied"}
+              ? "Accessing Whitelist..."
+              : "Wallet Not Whitelisted"}
           </Paper>
         )
       ) : (
@@ -104,9 +106,6 @@ const MintBox = styled((props) => {
 
   .connect-button {
     padding: 1.25em;
-  }
-
-  .connected-content {
   }
 
   .presale-authorization {

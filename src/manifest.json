@@ -1,6 +1,6 @@
 {
   "mintingDetails": {
-    "freeMint": true
+    "freeMint": false
   },
   "socials": {
     "twitter": "https://twitter.com/derpyapes",

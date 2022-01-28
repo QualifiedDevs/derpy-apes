@@ -2,7 +2,7 @@
 
 import Web3 from "web3";
 
-const web3 = new Web3("ws://remotenode.com:8546");
+const web3 = new Web3("wss://remotenode.com:8546");
 
 async function sign(
   privateKey: string,

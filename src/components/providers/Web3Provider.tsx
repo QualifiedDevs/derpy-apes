@@ -95,7 +95,7 @@ const defaultContext: Web3ContextValues = {
 export const Web3Context = createContext(defaultContext);
 
 // TODO: Clean up the provider connections and such
-const web3 = new Web3("ws://localhost:8546");
+const web3 = new Web3("wss://localhost:8546");
 
 // TODO: Type declarations for component props
 export default function Web3Provider(props: any) {
@@ -173,7 +173,7 @@ export default function Web3Provider(props: any) {
 
     provider.on("disconnect", (err: { code: number; message: string }) => {
       console.log("DISCONNECT", err);
-      web3.setProvider("ws://localhost:8546");
+      web3.setProvider("wss://localhost:8546");
       setConnected(false);
     });
   }, [provider]);

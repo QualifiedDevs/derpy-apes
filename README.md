@@ -1,1 +1,1 @@
-Qualified Devs Site
+Site by https://qualifieddevs.io

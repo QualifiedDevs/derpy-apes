@@ -1,19 +1,11 @@
 //@ts-nocheck
 
+import React, { useState, useMemo, useEffect, useRef } from "react";
+
 import { styled, useTheme } from "@mui/material/styles";
 import { Box, useMediaQuery } from "@mui/material";
 
 import Image from "next/image";
-
-// Make a Gallery Image for each image. When mounted, begin interval looping over them,
-// setting styling. When unmounted, stop the interval.
-const MockupsGif = styled(({ images, ...props }) => {
-  return (
-    <Box {...props}>
-      <GalleryImage src={images[0]}/>
-    </Box>
-  );
-})``;
 
 const GalleryImage = styled(({ src, ...props }) => {
   return (
@@ -31,9 +23,28 @@ const GalleryImage = styled(({ src, ...props }) => {
   }
 `;
 
+const MockupsGif = styled(({ images, delay, ...props }) => {
+  const galleryImages = useMemo(() =>
+    images.map((image) => <GalleryImage src={image} />)
+  );
+
+  const active = useRef(0)
+  const [activeImage, setActiveImage] = useState(0);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setActiveImage(active.current)
+      active.current = (active.current + 1) % 4
+    }, delay);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  return <Box {...props}>{galleryImages[activeImage]}</Box>;
+})``;
+
 const Gallery = styled(({ images, ...props }) => {
   const galleryImages = images.map((imagePathname: string) => (
-    <GalleryImage src={imagePathname} key={imagePathname}/>
+    <GalleryImage src={imagePathname} key={imagePathname} />
   ));
   return <Box {...props}>{galleryImages}</Box>;
 })`
@@ -48,7 +59,11 @@ const MockupsGallery = ({ images, ...props }) => {
   const theme = useTheme();
   const isSmallViewport = useMediaQuery(theme.breakpoints.down("sm"));
 
-  return isSmallViewport ? <MockupsGif images={images}/> : <Gallery images={images} />;
+  return isSmallViewport ? (
+    <MockupsGif images={images} delay={1000} />
+  ) : (
+    <Gallery images={images} />
+  );
 };
 
 export default MockupsGallery;

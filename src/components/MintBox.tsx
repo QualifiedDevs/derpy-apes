@@ -154,7 +154,7 @@ const MintBox = styled((props) => {
     font-size: 1em;
     font-weight: semi-bold;
     text-transform: uppercase;
-    color: #ffffff;
+    color: ${({theme}) => theme.palette.primary.main}
   }
 
   .total-minted {

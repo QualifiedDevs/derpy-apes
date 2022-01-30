@@ -26,7 +26,7 @@ const IncrementButton = styled((props) => {
   return (
     <IconButton
       color="primary"
-      onClick={() => quantity < (maxPerTxn || 0) && setQuantity(quantity + 1)}
+      onClick={() => quantity < (maxPerTxn || 100) && setQuantity(quantity + 1)}
       {...props}
     >
       <Add />
@@ -65,7 +65,7 @@ const ChooseQuantity = styled((props) => {
   return (
     <Box {...props}>
       <Typography className="details">
-        Amount to mint ({maxPerTxn || 0} max.)
+        Amount to mint ({maxPerTxn || 100} max.)
       </Typography>
       <Box className="selection-ui">
         <DecrementButton />
@@ -78,7 +78,7 @@ const ChooseQuantity = styled((props) => {
                 return setQuantity(1)
               value = parseInt(value);
               if (isNaN(value)) return;
-              setQuantity(Math.max(Math.min(value, (maxPerTxn || 0)), 1));
+              setQuantity(Math.max(Math.min(value, (maxPerTxn || 100)), 1));
           }}
           required
           placeholder="mint amount"

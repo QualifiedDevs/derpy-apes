@@ -104,7 +104,7 @@ const defaultContext: Web3ContextValues = {
 
 export const Web3Context = createContext(defaultContext);
 
-const web3 = new Web3("wss://localhost:8545")
+const web3 = new Web3()
 
 // TODO: Type declarations for component props
 export default function Web3Provider(props: any) {
@@ -218,7 +218,7 @@ export default function Web3Provider(props: any) {
       const maxPerTxn = await readonlyMintContract.methods.maxMintAmountPerTx().call();
       setMaxPerTxn(maxPerTxn)
     })();
-  }, []);
+  }, [isMinting]);
 
   useEffect(() => {
     if (!isClient || !looksContract || !mintContract || !connected || !connectedAccounts) return;

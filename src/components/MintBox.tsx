@@ -57,7 +57,7 @@ const MintBox = styled((props) => {
       <Paper className="mint-info" elevation={1} sx={{ mb: 2.5 }}>
         <Typography className="key">Price</Typography>
         <Typography className="value">
-          {ethPrice / 100000000000000000} Ξ
+          {ethPrice / 1000000000000000000} $ETH or {looksPrice / 1000000000000000000} $LOOKS
         </Typography>
       </Paper>
 

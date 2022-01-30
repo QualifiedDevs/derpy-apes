@@ -80,6 +80,9 @@ export type Web3ContextValues = {
   maxPerTxn?: number;
   setMaxPerTxn?: React.Dispatch<number>;
 
+  freeMintMax?: number;
+  setFreeMintMax?: React.Dispatch<number>;
+
   //TODO: Convert to enum
   projectStage?: number;
   setProjectStage?: React.Dispatch<number>;
@@ -93,7 +96,10 @@ const readonlyWeb3 = new Web3(
   )
 );
 
-const readonlyMintContract = new readonlyWeb3.eth.Contract(mintAbi, mintContractMetadata.address);
+const readonlyMintContract = new readonlyWeb3.eth.Contract(
+  mintAbi,
+  mintContractMetadata.address
+);
 
 const defaultContext: Web3ContextValues = {
   connectedAccounts: null,
@@ -104,11 +110,10 @@ const defaultContext: Web3ContextValues = {
 
 export const Web3Context = createContext(defaultContext);
 
-const web3 = new Web3()
+const web3 = new Web3();
 
 // TODO: Type declarations for component props
 export default function Web3Provider(props: any) {
-
   //* INITIALIZE GLOBAL & LOCAL STATE
   const [provider, setProvider] = useState(defaultContext.provider);
   const [mintContract, setMintContract] = useState(defaultContext.mintContract);
@@ -144,13 +149,19 @@ export default function Web3Provider(props: any) {
   const [projectStage, setProjectStage] = useState<number>(
     defaultContext.mintStage
   );
+  const [freeMintMax, setFreeMintMax] = useState<number>(
+    defaultContext.freeMintMax
+  );
+
   useEffect(() => {
     if (!isClient() || !connected || !mintContract) return;
     (async () => {
-      const res = await mintContract.methods.avaliableFreeMint(3, connectedAccounts[0]).call()
+      const res = await mintContract.methods
+        .avaliableFreeMint(3, connectedAccounts[0])
+        .call();
       setFreeMintAvailable(res);
-    })()
-  },[mintContract, isMinting, connectedAccounts])
+    })();
+  }, [mintContract, isMinting, connectedAccounts]);
 
   //* MIDDLEWARE FOR STATE CHANGES
 
@@ -188,7 +199,6 @@ export default function Web3Provider(props: any) {
       web3.setProvider(null);
       setConnected(false);
     });
-
   }, [provider]);
 
   useEffect(() => {
@@ -205,25 +215,40 @@ export default function Web3Provider(props: any) {
   useEffect(() => {
     if (!isClient()) return;
     (async () => {
-      const projectStage = await readonlyMintContract.methods.projectStage().call();
-      setProjectStage(parseInt(projectStage));  //? why is this a string?
+      const projectStage = await readonlyMintContract.methods
+        .projectStage()
+        .call();
+      setProjectStage(parseInt(projectStage)); //? why is this a string?
       const maxSupply = await readonlyMintContract.methods.maxSupply().call();
       setMaxSupply(maxSupply);
-      const totalSupply = await readonlyMintContract.methods.totalSupply().call();
+      const totalSupply = await readonlyMintContract.methods
+        .totalSupply()
+        .call();
       setTotalSupply(totalSupply);
       const ethPrice = await readonlyMintContract.methods.Ethcost().call();
       setEthPrice(ethPrice);
       const looksPrice = await readonlyMintContract.methods.LooksCost().call();
       setLooksPrice(looksPrice);
-      const maxPerTxn = await readonlyMintContract.methods.maxMintAmountPerTx().call();
-      setMaxPerTxn(maxPerTxn)
+      const maxPerTxn = await readonlyMintContract.methods
+        .maxMintAmountPerTx()
+        .call();
+      setMaxPerTxn(maxPerTxn);
+      const freeMintMax = await readonlyMintContract.methods.maxFree().call();
+      setFreeMintMax(freeMintMax);
     })();
   }, [isMinting]);
 
   useEffect(() => {
-    if (!isClient || !looksContract || !mintContract || !connected || !connectedAccounts) return;
+    if (
+      !isClient ||
+      !looksContract ||
+      !mintContract ||
+      !connected ||
+      !connectedAccounts
+    )
+      return;
     (async () => {
-      console.log(provider, looksContract)
+      console.log(provider, looksContract);
       const looksBalanceApproved = await looksContract.methods
         .allowance(connectedAccounts[0], mintContract._address)
         .call();
@@ -299,7 +324,8 @@ export default function Web3Provider(props: any) {
     accountNFTsMinted,
     looksBalanceApproved,
     projectStage,
-    maxPerTxn
+    maxPerTxn,
+    freeMintMax,
   };
 
   return <Web3Context.Provider value={context} {...props} />;

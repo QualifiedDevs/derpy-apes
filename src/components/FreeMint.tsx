@@ -14,13 +14,14 @@ const FreeMint = styled((props) => {
     isMinting,
     setIsMinting,
     connectedAccounts,
+    freeMintMax
   } = useWeb3();
 
   const mint = async () => {
     console.log("FREE MINT");
     setIsMinting(true);
     const { hash, signature } = freeMintWhitelistAuth!;
-    const contractMint = mintContract.methods.freeMint(3, hash, signature);
+    const contractMint = mintContract.methods.freeMint(freeMintMax || 0, hash, signature);
     try {
       const gasEstimate = await contractMint.estimateGas()
       console.log("gasEstimate", gasEstimate);
@@ -46,7 +47,7 @@ const FreeMint = styled((props) => {
       {freeMintAvailable? freeMintWhitelistAuth === undefined
         ? "Requesting Free Mint Whitelist..."
         : freeMintWhitelistAuth
-        ? "Mint 3 Free"
+        ? `Mint ${freeMintMax || 0} Free`
         : "Free Mint Whitelist Unavailable" : "Free Mints Exceeded"}
     </Button>
   );

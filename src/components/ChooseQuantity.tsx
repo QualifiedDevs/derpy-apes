@@ -8,6 +8,8 @@ import { Box, Typography, IconButton, TextField } from "@mui/material";
 import Add from "@mui/icons-material/Add";
 import Remove from "@mui/icons-material/Remove";
 
+import useWeb3 from "@hooks/useWeb3";
+
 // Max quantity varies depending on context...
 // I can set it whenever they connect a wallet.
 // -1 can represent no permissions? or null.
@@ -16,16 +18,15 @@ import Remove from "@mui/icons-material/Remove";
 export const QuantityContext = createContext({
   quantity: 1,
   setQuantity: (quantity: number) => {},
-  maxQuantity: 20,
-  setMaxQuantity: (quantity: number) => {},
 });
 
 const IncrementButton = styled((props) => {
-  const { quantity, setQuantity, maxQuantity } = useContext(QuantityContext);
+  const { quantity, setQuantity } = useContext(QuantityContext);
+  const {maxPerTxn} = useWeb3()
   return (
     <IconButton
       color="primary"
-      onClick={() => quantity < maxQuantity && setQuantity(quantity + 1)}
+      onClick={() => quantity < (maxPerTxn || 0) && setQuantity(quantity + 1)}
       {...props}
     >
       <Add />
@@ -57,14 +58,14 @@ const DecrementButton = styled((props) => {
 `;
 
 const ChooseQuantity = styled((props) => {
-  const { quantity, setQuantity, maxQuantity } = useContext(QuantityContext);
 
-  useEffect(() => {}, []);
+  const { quantity, setQuantity } = useContext(QuantityContext);
+  const {maxPerTxn} = useWeb3()
 
   return (
     <Box {...props}>
       <Typography className="details">
-        Amount to mint ({maxQuantity} max.)
+        Amount to mint ({maxPerTxn || 0} max.)
       </Typography>
       <Box className="selection-ui">
         <DecrementButton />
@@ -77,7 +78,7 @@ const ChooseQuantity = styled((props) => {
                 return setQuantity(1)
               value = parseInt(value);
               if (isNaN(value)) return;
-              setQuantity(Math.max(Math.min(value, maxQuantity), 1));
+              setQuantity(Math.max(Math.min(value, (maxPerTxn || 0)), 1));
           }}
           required
           placeholder="mint amount"
@@ -108,11 +109,10 @@ const ChooseQuantity = styled((props) => {
 
 export const QuantityProvider = (props) => {
   const [quantity, setQuantity] = useState(1);
-  const [maxQuantity, setMaxQuantity] = useState(3);
 
   return (
     <QuantityContext.Provider
-      value={{ quantity, setQuantity, maxQuantity, setMaxQuantity }}
+      value={{ quantity, setQuantity}}
       {...props}
     />
   );

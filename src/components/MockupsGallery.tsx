@@ -24,6 +24,7 @@ const GalleryImage = styled(({ src, ...props }) => {
 `;
 
 const MockupsGif = styled(({ images, delay, ...props }) => {
+
   const galleryImages = useMemo(() =>
     images.map((image) => <GalleryImage src={image} />)
   );

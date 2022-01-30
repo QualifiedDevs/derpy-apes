@@ -83,21 +83,32 @@ export type Web3ContextValues = {
   //TODO: Convert to enum
   projectStage?: number;
   setProjectStage?: React.Dispatch<number>;
+
+  readonlyMintContract?: any;
 };
+
+const readonlyWeb3 = new Web3(
+  new Web3.providers.WebsocketProvider(
+    `wss://rinkeby.infura.io/ws/v3/${process.env.NEXT_PUBLIC_INFURA_ID}`
+  )
+);
+
+const readonlyMintContract = new readonlyWeb3.eth.Contract(mintAbi, mintContractMetadata.address);
 
 const defaultContext: Web3ContextValues = {
   connectedAccounts: null,
+  readonlyMintContract,
   connected: false,
   isMinting: false,
 };
 
 export const Web3Context = createContext(defaultContext);
 
-// TODO: Clean up the provider connections and such
-const web3 = new Web3("wss://localhost:8546");
+const web3 = new Web3("wss://localhost:8545")
 
 // TODO: Type declarations for component props
 export default function Web3Provider(props: any) {
+
   //* INITIALIZE GLOBAL & LOCAL STATE
   const [provider, setProvider] = useState(defaultContext.provider);
   const [mintContract, setMintContract] = useState(defaultContext.mintContract);
@@ -143,11 +154,6 @@ export default function Web3Provider(props: any) {
 
   //* MIDDLEWARE FOR STATE CHANGES
 
-  // useEffect(() => {
-  //   if (!isClient()) return;
-
-  // }, [])
-
   useEffect(() => {
     if (!isClient() || !provider) return;
 
@@ -179,9 +185,10 @@ export default function Web3Provider(props: any) {
     });
 
     provider.on("disconnect", (err: { code: number; message: string }) => {
-      web3.setProvider("wss://localhost:8546");
+      web3.setProvider(null);
       setConnected(false);
     });
+
   }, [provider]);
 
   useEffect(() => {
@@ -196,26 +203,27 @@ export default function Web3Provider(props: any) {
   }, [provider]);
 
   useEffect(() => {
-    if (!isClient() || !mintContract) return;
+    if (!isClient()) return;
     (async () => {
-      const projectStage = await mintContract.methods.projectStage().call();
+      const projectStage = await readonlyMintContract.methods.projectStage().call();
       setProjectStage(parseInt(projectStage));  //? why is this a string?
-      // setProjectStage(2)
-      console.log("projectStage", projectStage)
-      const maxSupply = await mintContract.methods.maxSupply().call();
+      const maxSupply = await readonlyMintContract.methods.maxSupply().call();
       setMaxSupply(maxSupply);
-      const totalSupply = await mintContract.methods.totalSupply().call();
+      const totalSupply = await readonlyMintContract.methods.totalSupply().call();
       setTotalSupply(totalSupply);
-      const ethPrice = await mintContract.methods.Ethcost().call();
+      const ethPrice = await readonlyMintContract.methods.Ethcost().call();
       setEthPrice(ethPrice);
-      const looksPrice = await mintContract.methods.LooksCost().call();
+      const looksPrice = await readonlyMintContract.methods.LooksCost().call();
       setLooksPrice(looksPrice);
+      const maxPerTxn = await readonlyMintContract.methods.maxMintAmountPerTx().call();
+      setMaxPerTxn(maxPerTxn)
     })();
-  }, [mintContract]);
+  }, []);
 
   useEffect(() => {
-    if (!isClient || !looksContract || !connected || !connectedAccounts) return;
+    if (!isClient || !looksContract || !mintContract || !connected || !connectedAccounts) return;
     (async () => {
+      console.log(provider, looksContract)
       const looksBalanceApproved = await looksContract.methods
         .allowance(connectedAccounts[0], mintContract._address)
         .call();
@@ -290,7 +298,8 @@ export default function Web3Provider(props: any) {
     looksPrice,
     accountNFTsMinted,
     looksBalanceApproved,
-    projectStage
+    projectStage,
+    maxPerTxn
   };
 
   return <Web3Context.Provider value={context} {...props} />;

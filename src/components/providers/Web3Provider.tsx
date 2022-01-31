@@ -161,7 +161,7 @@ export default function Web3Provider(props: any) {
         .call();
       setFreeMintAvailable(res);
     })();
-  }, [mintContract, isMinting, connectedAccounts]);
+  }, [mintContract, isMinting, connectedAccounts, connected]);
 
   //* MIDDLEWARE FOR STATE CHANGES
 
@@ -218,7 +218,9 @@ export default function Web3Provider(props: any) {
       const projectStage = await readonlyMintContract.methods
         .projectStage()
         .call();
-      setProjectStage(parseInt(projectStage)); //? why is this a string?
+      // setProjectStage(parseInt(projectStage)); //? why is this a string?
+      setProjectStage(0); //? why is this a string?
+
       const maxSupply = await readonlyMintContract.methods.maxSupply().call();
       setMaxSupply(maxSupply);
       const totalSupply = await readonlyMintContract.methods
@@ -248,7 +250,6 @@ export default function Web3Provider(props: any) {
     )
       return;
     (async () => {
-      console.log(provider, looksContract);
       const looksBalanceApproved = await looksContract.methods
         .allowance(connectedAccounts[0], mintContract._address)
         .call();
@@ -264,27 +265,13 @@ export default function Web3Provider(props: any) {
 
     (async () => {
       if (!accountConnected) return setFreeMintWhitelistAuth(undefined);
-      let auth;
-      try {
-        auth = await getMintAuth(connectedAccounts[0], authStage.FREE_MINT); //? WHY IS IT GIVING WRONG ACCOUNT/
-        console.log("WHITELIST AUTHORIZED", auth);
-      } catch (err) {
-        auth = null;
-        console.error("WHITELIST DENIED", err);
-      }
+      const auth = await getMintAuth(connectedAccounts[0], authStage.FREE_MINT);
       setFreeMintWhitelistAuth(auth);
     })();
 
     (async () => {
       if (!accountConnected) return setPresaleWhitelistAuth(undefined);
-      let auth;
-      try {
-        auth = await getMintAuth(connectedAccounts[0], authStage.PRESALE);
-        console.log("WHITELIST AUTHORIZED", auth);
-      } catch (err) {
-        auth = null;
-        console.error("WHITELIST DENIED", err);
-      }
+      const auth = await getMintAuth(connectedAccounts[0], authStage.PRESALE);
       setPresaleWhitelistAuth(auth);
     })();
 

@@ -39,13 +39,17 @@ async function authorizePresaleMint(
   console.log(`Auth requested for stage ${stage} from account ${account}`);
 
   if (!whitelist[account])
-    return res.status(403).send("Account Not on Whitelist");
+    return res.status(403).send({error: "Account Not on Whitelist"});
+
+  console.log("signing...")
 
   const message: AuthData = await sign(
     privateKey,
     mintContractMetadata.address,
     account
   );
+
+  console.log("message", message)
 
   res.status(200).json(message);
 }

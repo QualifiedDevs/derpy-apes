@@ -27,10 +27,9 @@ const MintBox = styled((props) => {
     presaleWhitelistAuth,
     maxSupply,
     totalSupply,
-    maxPerTxn,
-    projectStage,
     ethPrice,
     looksPrice,
+    projectStage,
   } = useWeb3();
 
   return (

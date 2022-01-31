@@ -12,8 +12,9 @@ const Avatar = styled(({ src, ...props }) => {
       <Image
         src={`/team-avatars/${src}`}
         layout="fill"
-        objectFit="cover"
-        objectPosition="center"
+        objectFit="contain"
+        objectPosition="bottom"
+        sizes="30vw"
       />
     </Box>
   );

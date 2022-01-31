@@ -34,7 +34,7 @@ const FAQItem = styled(({ summary, children, ...props }) => {
   background: ${({ theme }) => theme.palette.secondary.main};
 
   svg {
-      fill: white;
+    fill: white;
   }
 
   border-radius: 12px !important;
@@ -49,7 +49,7 @@ const FAQItem = styled(({ summary, children, ...props }) => {
   p {
     font-size: 1rem;
     b {
-        text-transform: uppercase;
+      text-transform: uppercase;
     }
     span {
       margin: 0.5em 0 1em;
@@ -68,88 +68,76 @@ const FAQ = styled((props) => {
 
   return (
     <Box {...props}>
-      <Container maxWidth="md" >
+      <Container maxWidth="md">
         <Typography variant="h3" className="heading">
           FAQ
         </Typography>
-        <Box component="ul">
+        <Box component="ul" className="faq-box">
           <FAQItem
-            summary={"How Many Anatomy Apes Are There in Total?"}
+            summary={"What is the total supply?"}
             expanded={expanded === "panel1"}
             onChange={handleChange("panel1")}
           >
-            A total of 8,000 Anatomy Apes are available, with the combination of
-            around 130+ traits across the collection.
+            There will be a total of 7,777 derpy apes available to mint
           </FAQItem>
           <FAQItem
-            summary={"How Much is Mint?"}
+            summary={"What is the mint price?"}
             expanded={expanded === "panel2"}
             onChange={handleChange("panel2")}
           >
-            First 800 apes mints are FREE (max. 1 / wallet)! Then the remaining
-            apes will cost 0.039 Ξ. The total amount of mints you can make is 20
-            per wallet (for both FREE / paid mints).
+            0.028 ETH or the equivalent in $LOOKS
           </FAQItem>
           <FAQItem
-            summary={"Any Affiliation With BAYC?"}
+            summary={"Free mint?"}
             expanded={expanded === "panel3"}
             onChange={handleChange("panel3")}
           >
-            <span>
-              No, we are not in any way affiliated with BAYC nor MAYC. But we
-              are heavily inspired by them, and wanted to introduce high quality
-              derivative artworks based on it.
-            </span>
-            <br />
-            <span>
-              We deconstructed the traits from BAYC apes and created a
-              completely different & unique combination of ape and added our
-              anatomical element.
-            </span>
+              The first <b>777</b> derpy apes will be <b>FREE</b> (max 1 per wallet). In order
+              to qualify for the free mint, you must hold a NFT from at least one
+              of these collections (will be validated by our smart contract):
+              <br />
+              <br />
+
+            <ul>
+              <li>alienfrens</li>
+              <li>cryptomories</li>
+              <li>3dfrankenpunks</li>
+              <li>deadfellaz</li>
+              <li>pudgy penguins</li>
+              <li>bayc</li>
+              <li>mayc</li>
+              <li>coolcats</li>
+              <li>doodles</li>
+              <li>fanggang</li>
+              <li>sketchyapebc</li>
+              <li>cryptobatz</li>
+              <li>chameleon nft</li>
+              <li>fishyfam</li>
+              <li>0xapes</li>
+              <li>night owl</li>
+            </ul>
           </FAQItem>
           <FAQItem
-            summary={"Wen Reveal?"}
+            summary={"Can I mint using $LOOKS?"}
             expanded={expanded === "panel4"}
             onChange={handleChange("panel4")}
           >
-            Minted Anatomy Apes will be revealed immediately.
+            Yes
           </FAQItem>
           <FAQItem
-            summary={"Future Roadmap?"}
+            summary={"When will my NFT be revealed?"}
             expanded={expanded === "panel5"}
             onChange={handleChange("panel5")}
           >
-            <b>Marketing Strategies</b>
-            <br />
-            <span>
-              Implementing post-marketing strategies to make the Anatomy Science
-              universe well known by engaging a broader audience to help
-              maintain the floor price of the collection.
-            </span>
-            <br />
-            <b>Future Collabs & Giveaways</b>
-            <br />
-            <span>
-              Exclusive future giveaways and collaboration opportunities for
-              Anatomy Ape hodlers.
-            </span>
-            <br />
-            <b>Privilege for Future Collections</b>
-            <br />
-            <span>
-              The essence of the roadmap is to make the Anatomy Science universe
-              bigger, and everyone who takes part in our journey will enjoy the
-              privilege.
-            </span>
-            <br />
-            <b>Community Voice</b>
-            <br />
-            <span>
-              All ASAC holders will have a voice to help shape the future of the
-              Anatomy Science universe!
-            </span>
-            <br />
-            !WAGGA
+            All derpy apes will be revealed 24 hours after minting is complete
+          </FAQItem>
+          <FAQItem
+            summary={"Is there a roadmap set in place?"}
+            expanded={expanded === "panel6"}
+            onChange={handleChange("panel6")}
+          >
+            Yes, you can learn more about our project's vision by joining our
+            discord
           </FAQItem>
         </Box>
       </Container>
@@ -164,9 +152,10 @@ const FAQ = styled((props) => {
     text-align: center;
     margin-bottom: 1em;
   }
-  ul {
+  .faq-box {
     list-style-type: none;
     padding: 0;
+
   }
 `;
 

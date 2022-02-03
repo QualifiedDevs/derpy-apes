@@ -22,16 +22,6 @@ import useWeb3 from "@hooks/useWeb3";
 const MintBox = styled((props) => {
   const { maxQuantity } = useContext(QuantityContext);
 
-  const {
-    connected,
-    presaleWhitelistAuth,
-    maxSupply,
-    totalSupply,
-    ethPrice,
-    looksPrice,
-    projectStage,
-  } = useWeb3();
-
   return (
     <Paper {...props}>
       <Typography className="description" sx={{ mb: 2 }}>
@@ -48,67 +38,15 @@ const MintBox = styled((props) => {
       <Paper className="mint-info" elevation={1} sx={{ mb: 1.5 }}>
         <Typography className="key">NFT Minted</Typography>
         <Typography className="value">
-          {totalSupply || "... "}/{maxSupply || " ..."}
+          {0}/{7777}
         </Typography>
       </Paper>
       <Paper className="mint-info" elevation={1} sx={{ mb: 2.5 }}>
         <Typography className="key">Price</Typography>
         <Typography className="value">
-          {ethPrice / 1000000000000000000} ETH <wbr /> or {looksPrice / 1000000000000000000} LOOKS
+          0.024 ETH <wbr /> or 12 LOOKS
         </Typography>
       </Paper>
-
-      {connected ? (
-        (() => {
-          switch (projectStage) {
-            case 0:
-              return <FreeMint variant="contained" />;
-            case 1:
-              return presaleWhitelistAuth ? (
-                <Box className="connected-content">
-                  <ChooseQuantity
-                    className="choose-quantity"
-                    sx={{ mt: "auto", mb: 1.5 }}
-                  />
-                  <MultiButton
-                    variant="contained"
-                    className="multi-button"
-                    sx={{ mb: 2 }}
-                  />
-                </Box>
-              ) : (
-                <Paper className="presale-authorization" sx={{ mb: 2 }}>
-                  {presaleWhitelistAuth === undefined
-                    ? "Accessing Whitelist..."
-                    : "Wallet Not Whitelisted"}
-                </Paper>
-              );
-            case 2:
-              return (
-                <Box className="connected-content">
-                  <ChooseQuantity
-                    className="choose-quantity"
-                    sx={{ mt: "auto", mb: 1.5 }}
-                  />
-                  <MultiButton
-                    variant="contained"
-                    className="multi-button"
-                    sx={{ mb: 2 }}
-                  />
-                </Box>
-              );
-            default:
-              return "undefined";
-          }
-        })()
-      ) : (
-        <ConnectWallet
-          variant="contained"
-          className="connect-button"
-          sx={{ mb: 2 }}
-        />
-      )}
-
       {/* <Typography className="total-minted">
         My total NFT minted (0 / {maxQuantity})
       </Typography> */}

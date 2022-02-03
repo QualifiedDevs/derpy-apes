@@ -15,7 +15,7 @@ interface MyAppProps extends AppProps {
 }
 
 import { QuantityProvider } from "@components/ChooseQuantity";
-import Web3Provider from "@components/providers/Web3Provider";
+// import Web3Provider from "@components/providers/Web3Provider";
 
 function MyApp(props: MyAppProps) {
   //@ts-ignore
@@ -40,14 +40,14 @@ function MyApp(props: MyAppProps) {
             html: { scrollBehavior: "smooth" },
           }}
         />
-        <Web3Provider
+        {/* <Web3Provider
           abi={pageProps.contractABI}
           contractAddress={pageProps.contractMetadata.address}
-        >
+        > */}
           <QuantityProvider>
             <Component {...pageProps} />
           </QuantityProvider>
-        </Web3Provider>
+        {/* </Web3Provider> */}
       </ThemeProvider>
     </CacheProvider>
   );

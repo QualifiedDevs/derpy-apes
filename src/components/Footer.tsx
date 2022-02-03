@@ -58,7 +58,7 @@ const Footer = styled(({ socials, marketplaces, contract, ...props }) => {
 
   return (
     <Box component="footer" {...props}>
-      <Typography variant="h5" sx={{ mb: 1 }}>
+      {/* <Typography variant="h5" sx={{ mb: 1 }}>
         Derpy Apes Smart Contract
       </Typography>
       <ContractLookup
@@ -66,7 +66,7 @@ const Footer = styled(({ socials, marketplaces, contract, ...props }) => {
         contract={contract}
         color="secondary"
         className="contract-lookup"
-      />
+      /> */}
       <Box component="nav">
         <ul>
           {socialButtons}

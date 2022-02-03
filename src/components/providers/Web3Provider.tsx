@@ -153,16 +153,6 @@ export default function Web3Provider(props: any) {
     defaultContext.freeMintMax
   );
 
-  useEffect(() => {
-    if (!isClient() || !connected || !mintContract) return;
-    (async () => {
-      const res = await mintContract.methods
-        .avaliableFreeMint(3, connectedAccounts[0])
-        .call();
-      setFreeMintAvailable(res);
-    })();
-  }, [mintContract, isMinting, connectedAccounts, connected]);
-
   //* MIDDLEWARE FOR STATE CHANGES
 
   useEffect(() => {
@@ -172,9 +162,6 @@ export default function Web3Provider(props: any) {
 
     setMintContract(
       new web3.eth.Contract(mintAbi, mintContractMetadata.address)
-    );
-    setLooksContract(
-      new web3.eth.Contract(looksAbi, looksContractMetadata.address)
     );
 
     // TODO: Make sure this shit ain't broken!
@@ -262,13 +249,6 @@ export default function Web3Provider(props: any) {
     const accountConnected = !(!connectedAccounts || !connectedAccounts[0]);
 
     // TODO: Make auth request depend on presale state to reduce traffic
-
-    (async () => {
-      if (!accountConnected) return setFreeMintWhitelistAuth(undefined);
-      const auth = await getMintAuth(connectedAccounts[0], authStage.FREE_MINT);
-      setFreeMintWhitelistAuth(auth);
-    })();
-
     (async () => {
       if (!accountConnected) return setPresaleWhitelistAuth(undefined);
       const auth = await getMintAuth(connectedAccounts[0], authStage.PRESALE);

@@ -7,6 +7,13 @@ import { Box, useMediaQuery } from "@mui/material";
 
 import Image from "next/image";
 
+import img1 from "@public/mockups/1.png";
+import img2 from "@public/mockups/2.png";
+import img3 from "@public/mockups/3.png";
+import img4 from "@public/mockups/4.png";
+
+const images = [img1, img2, img3, img4];
+
 const GalleryImage = styled(({ src, ...props }) => {
   return (
     <Box {...props}>
@@ -24,18 +31,17 @@ const GalleryImage = styled(({ src, ...props }) => {
 `;
 
 const MockupsGif = styled(({ images, delay, ...props }) => {
-
   const galleryImages = useMemo(() =>
     images.map((image) => <GalleryImage src={image} />)
   );
 
-  const active = useRef(0)
+  const active = useRef(0);
   const [activeImage, setActiveImage] = useState(0);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setActiveImage(active.current)
-      active.current = (active.current + 1) % 4
+      setActiveImage(active.current);
+      active.current = (active.current + 1) % 4;
     }, delay);
     return () => clearInterval(intervalId);
   }, []);

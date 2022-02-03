@@ -85,7 +85,7 @@ const FAQ = styled((props) => {
             expanded={expanded === "panel2"}
             onChange={handleChange("panel2")}
           >
-            0.028 ETH or the equivalent in $LOOKS
+            0.024 $ETH or the equivalent in $LOOKS
           </FAQItem>
           <FAQItem
             summary={"Free mint?"}

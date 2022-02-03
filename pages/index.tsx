@@ -9,6 +9,7 @@ import { LogoLong } from "@components/Branding";
 
 import MockupsGallery from "@components/MockupsGallery";
 import MintBox from "@components/MintBox";
+import Reminder from "@components/Reminder";
 import Team from "@components/Team";
 import FAQ from "@components/FAQ";
 import Footer from "@components/Footer";
@@ -18,7 +19,7 @@ const index = styled(
     return (
       <Box {...props}>
         {/* @ts-ignore */}
-        <Container id="hook">
+        <Container id="hook" sx={{mb: 4}}>
           <LogoLong className="logo" sx={{ mb: 1 }} />
           <Box className="content">
             <MockupsGallery images={mockupImages} />
@@ -26,7 +27,9 @@ const index = styled(
           </Box>
         </Container>
         {/* <DebugAuthorization variant="contained"/> */}
-        <Team team={manifest.team} />
+        {/* <Team team={manifest.team} /> */}
+        <Reminder />
+
         <FAQ />
         <Footer
           socials={manifest.socials}

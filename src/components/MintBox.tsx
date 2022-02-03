@@ -35,9 +35,7 @@ const MintBox = styled((props) => {
   return (
     <Paper {...props}>
       <Typography className="description" sx={{ mb: 2 }}>
-        <b>Anatomy Science Ape Club</b> is a collection of 8,000 anatomical
-        mortal apes dissected through the organs. Explore what your ape is
-        really made of inside out.
+        <b>Derpy Apes</b> is a collection of <b>7,777</b> illustrated apes with a signature facial expression. Derp around on the blockchain with us. First <b>777</b> mints will be <b>FREE</b>.
       </Typography>
       {/* <Typography>
         First <b>800 FREE</b>{" "}
@@ -56,7 +54,7 @@ const MintBox = styled((props) => {
       <Paper className="mint-info" elevation={1} sx={{ mb: 2.5 }}>
         <Typography className="key">Price</Typography>
         <Typography className="value">
-          {ethPrice / 1000000000000000000} $ETH <wbr /> or {looksPrice / 1000000000000000000} $LOOKS
+          {ethPrice / 1000000000000000000} ETH <wbr /> or {looksPrice / 1000000000000000000} LOOKS
         </Typography>
       </Paper>
 

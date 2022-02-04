@@ -92,7 +92,7 @@ export type Web3ContextValues = {
 
 const readonlyWeb3 = new Web3(
   new Web3.providers.WebsocketProvider(
-    `wss://rinkeby.infura.io/ws/v3/${process.env.NEXT_PUBLIC_INFURA_ID}`
+    `wss://mainnet.infura.io/ws/v3/${process.env.NEXT_PUBLIC_INFURA_ID}`
   )
 );
 

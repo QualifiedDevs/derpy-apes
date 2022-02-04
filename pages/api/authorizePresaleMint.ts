@@ -1,8 +1,12 @@
 //@ts-nocheck
 
+import Web3 from "web3";
 import { sign } from "@utils";
 
 import type { NextApiRequest, NextApiResponse } from "next";
+
+import mintAbi from "@src/artifacts/mintContract/abi"
+import mintContractMetadata from "@src/artifacts/mintContract/metadata"
 
 export type AuthData = {
   hash: string;
@@ -14,17 +18,25 @@ export enum authStage {
   PRESALE,
 }
 
-import mintContractMetadata from "@src/artifacts/mintContract/metadata";
-
 const privateKeys: string[] = [
   process.env.FREE_MINT_AUTH_PRIVATE_KEY,
   process.env.PRESALE_AUTH_PRIVATE_KEY,
 ];
 
-import freeMintWhitelist from "@src/freeMintWhitelist.json";
-import presaleWhitelist from "@src/presaleWhitelist.json";
+import whitelist from "@src/presaleWhitelist.json";
 
-const whitelists: object[] = [freeMintWhitelist, presaleWhitelist];
+const readonlyWeb3 = new Web3(
+  new Web3.providers.WebsocketProvider(
+    `wss://mainnet.infura.io/ws/v3/${process.env.NEXT_PUBLIC_INFURA_ID}`
+  )
+);
+
+const readonlyMintContract = new readonlyWeb3.eth.Contract(
+  mintAbi,
+  mintContractMetadata.address
+);
+
+
 
 async function authorizePresaleMint(
   req: NextApiRequest,
@@ -34,12 +46,24 @@ async function authorizePresaleMint(
   const { account, stage } = req.query;
 
   const privateKey = privateKeys[stage];
-  const whitelist = whitelists[stage];
 
   console.log(`Auth requested for stage ${stage} from account ${account}`);
 
-  if (!whitelist[account])
-    return res.status(403).send({error: "Account Not on Whitelist"});
+  if (stage === authStage.FREE_MINT) {
+
+    //! Get availableFreeMint from Contract
+    const checkRes = await readonlyMintContract.methods.availableFreeMint(1, account).call();
+    if (!checkRes)
+      return res.status(403).send({error: "Account Not on Whitelist"});
+  } else {
+    console.log("CHECKING PRESALE")
+    if (!whitelist[account])
+      return res.status(403).send({error: "Account Not on Whitelist"});
+  }
+
+
+
+  console.log("made it...")
 
   console.log("signing...")
 

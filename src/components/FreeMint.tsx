@@ -3,13 +3,13 @@
 import React, { useCallback } from "react";
 import { styled } from "@mui/material/styles";
 import { Button, CircularProgress } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 
 import useWeb3 from "@hooks/useWeb3";
 
 const FreeMint = styled((props) => {
   const {
     mintContract,
-    freeMintAvailable,
     freeMintWhitelistAuth,
     isMinting,
     setIsMinting,
@@ -41,14 +41,17 @@ const FreeMint = styled((props) => {
     setIsMinting(false);
   };
 
+  console.log(freeMintWhitelistAuth, isMinting)
+
   return (
-    <Button
+    <LoadingButton
       onClick={mint}
-      disabled={!freeMintWhitelistAuth || isMinting || !freeMintAvailable}
+      disabled={!freeMintWhitelistAuth}
+      loading={isMinting}
       {...props}
       variant="contained"
     >
-      {freeMintWhitelistAuth
+      {/* {freeMintWhitelistAuth
         ? freeMintAvailable
           ? `Mint ${freeMintMax || 0} Free`
           : freeMintAvailable === undefined
@@ -56,15 +59,17 @@ const FreeMint = styled((props) => {
           : "Free Mint Limit Exceeded"
         : freeMintWhitelistAuth === undefined
         ? "Fetching Authorization..."
-        : "Free Mint Not Allowed"}
-    </Button>
+        : "Free Mint Not Allowed"} */}
+
+        {
+          freeMintWhitelistAuth? `Mint ${freeMintMax || 0} Free` : "Minting Not Allowed"
+        }
+
+    </LoadingButton>
   );
 })`
   padding: 1.5em;
-  .MuiCircularProgress-root {
-    color: white;
-  }
-
+\
   &.Mui-disabled {
     background: ${({ theme }) => theme.palette.primary.dark};
   }

@@ -60,6 +60,7 @@ const MintBox = styled((props) => {
 
       {connected ? (
         (() => {
+          console.log("PROJECT STAGE", projectStage)
           switch (projectStage) {
             case 0:
               return <FreeMint variant="contained" />;

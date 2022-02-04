@@ -205,8 +205,7 @@ export default function Web3Provider(props: any) {
       const projectStage = await readonlyMintContract.methods
         .projectStage()
         .call();
-      // setProjectStage(parseInt(projectStage)); //? why is this a string?
-      setProjectStage(0); //? why is this a string?
+      setProjectStage(parseInt(projectStage)); //? why is this a string?
 
       const maxSupply = await readonlyMintContract.methods.maxSupply().call();
       setMaxSupply(maxSupply);
@@ -249,6 +248,13 @@ export default function Web3Provider(props: any) {
     const accountConnected = !(!connectedAccounts || !connectedAccounts[0]);
 
     // TODO: Make auth request depend on presale state to reduce traffic
+
+    (async () => {
+      if (!accountConnected) return setFreeMintWhitelistAuth(undefined);
+      const auth = await getMintAuth(connectedAccounts[0], authStage.FREE_MINT);
+      setFreeMintWhitelistAuth(auth);
+    })();
+
     (async () => {
       if (!accountConnected) return setPresaleWhitelistAuth(undefined);
       const auth = await getMintAuth(connectedAccounts[0], authStage.PRESALE);
@@ -284,7 +290,6 @@ export default function Web3Provider(props: any) {
     maxSupply,
     totalSupply,
     setTotalSupply,
-    freeMintAvailable,
     maxPerTxn,
     ethPrice,
     looksPrice,

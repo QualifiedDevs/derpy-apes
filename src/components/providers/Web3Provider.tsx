@@ -263,7 +263,7 @@ export default function Web3Provider(props: any) {
     })();
 
     setConnected(accountConnected);
-  }, [connectedAccounts]);
+  }, [connectedAccounts, isMinting]);
 
   useEffect(() => {
     if (!isClient() || connected) return;

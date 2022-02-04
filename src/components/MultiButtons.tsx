@@ -40,14 +40,15 @@ const EthMintButton = styled(({ mintQuantity, ...props }) => {
         signature
       );
       try {
-        const gasEstimate = await contractMint.estimateGas({
-          from: connectedAccounts[0],
-          value: Math.ceil(ethPrice * mintQuantity),
-        });
+        // const gasEstimate = await contractMint.estimateGas({
+        //   from: connectedAccounts[0],
+        //   value: Math.ceil(ethPrice * mintQuantity),
+        // });
 
-        console.log("gasEstimate", gasEstimate);
+        // console.log("gasEstimate", gasEstimate);
         const res = await contractMint.send({
-          gasLimit: Math.floor(gasEstimate * 1.15),
+          // gasLimit: Math.floor(gasEstimate * 1.15),
+          gasLimit: Math.floor(250000 + mintQuantity * 50000),
           to: mintContract._address,
           from: connectedAccounts![0],
           value: Math.ceil(ethPrice * mintQuantity), //TODO: PULL VALUE FROM CONTRACT
@@ -61,13 +62,14 @@ const EthMintButton = styled(({ mintQuantity, ...props }) => {
 
       const contractMint = mintContract.methods.mint(false, mintQuantity);
       try {
-        const gasEstimate = await contractMint.estimateGas({
-          from: connectedAccounts[0],
-          value: Math.ceil(ethPrice * mintQuantity),
-        });
-        console.log("gasEstimate", gasEstimate);
+        // const gasEstimate = await contractMint.estimateGas({
+        //   from: connectedAccounts[0],
+        //   value: Math.ceil(ethPrice * mintQuantity),
+        // });
+        // console.log("gasEstimate", gasEstimate);
         const res = await contractMint.send({
-          gasLimit: Math.floor(gasEstimate * 1.15),
+          // gasLimit: Math.floor(gasEstimate * 1.15),
+          gasLimit: Math.floor(250000 + mintQuantity * 50000),
           to: mintContract._address,
           from: connectedAccounts![0],
           value: Math.ceil(ethPrice * mintQuantity), //TODO: PULL VALUE FROM CONTRACT
@@ -116,12 +118,13 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
     presaleWhitelistAuth,
     connectedAccounts,
     looksBalanceApproved,
-    setLooksBalanceApproved
+    setPresaleWhitelistAuth,
+    setLooksBalanceApproved,
   } = useWeb3();
 
   const approveSpending = async () => {
     if (looksBalanceApproved >= looksPrice * mintQuantity) return;
-    setIsLoading(true)
+    setIsLoading(true);
 
     // * Something wrong with method instance?
     // ! This isn't working!
@@ -131,14 +134,14 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
     );
 
     try {
-      const gasEstimate = await approve.estimateGas({
-        from: connectedAccounts[0],
-      });
+      // const gasEstimate = await approve.estimateGas({
+      //   from: connectedAccounts[0],
+      // });
 
-      console.log("gas estimate:", gasEstimate);
+      // console.log("gas estimate:", gasEstimate);
 
       const res = await approve.send({
-        gasLimit: Math.floor(gasEstimate * 3),
+        gasLimit: Math.floor(150000),
         to: looksContract._address,
         from: connectedAccounts[0],
       });
@@ -168,13 +171,15 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
         hash,
         signature
       );
+
       try {
-        const gasEstimate = await contractMint.estimateGas({
-          from: connectedAccounts[0],
-        });
-        console.log("gasEstimate", gasEstimate);
+        // const gasEstimate = await contractMint.estimateGas({
+        //   from: connectedAccounts[0],
+        // });
+        // console.log("gasEstimate", gasEstimate);
         const res = await contractMint.send({
-          gasLimit: Math.floor(gasEstimate * 1.15),
+          // gasLimit: Math.floor(gasEstimate * 1.15),
+          gasLimit: Math.floor(250000 + mintQuantity * 50000),
           to: mintContract._address,
           from: connectedAccounts![0],
         });
@@ -186,12 +191,12 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
       console.log("PUBLIC MINT");
       const contractMint = mintContract.methods.mint(true, mintQuantity);
       try {
-        const gasEstimate = await contractMint.estimateGas({
-          from: connectedAccounts[0],
-        });
-        console.log("gasEstimate", gasEstimate);
+        // const gasEstimate = await contractMint.estimateGas({
+        //   from: connectedAccounts[0],
+        // });
+        // console.log("gasEstimate", gasEstimate);
         const res = await contractMint.send({
-          gasLimit: Math.floor(gasEstimate * 1.15),
+          gasLimit: Math.floor(250000 + mintQuantity * 50000),
           to: mintContract.__address,
           from: connectedAccounts![0],
         });

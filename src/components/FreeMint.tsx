@@ -22,7 +22,7 @@ const FreeMint = styled((props) => {
     setIsMinting(true);
     const { hash, signature } = freeMintWhitelistAuth!;
     const contractMint = mintContract.methods.freeMint(
-      2 || 0,
+      2,
       hash,
       signature
     );
@@ -61,7 +61,7 @@ const FreeMint = styled((props) => {
         ? "Fetching Authorization..."
         : "Free Mint Not Allowed"} */}
         {
-          freeMintWhitelistAuth? `Mint ${2 || 0} Free` : "Minting Not Allowed"
+          freeMintWhitelistAuth? `Mint 2 Free` : "Minting Not Allowed"
         }
 
     </LoadingButton>

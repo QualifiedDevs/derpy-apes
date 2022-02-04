@@ -1,0 +1,297 @@
+[33mcommit 2a76b4b1046de6fd26e0616fe761396af8537e06[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Feb 4 17:22:27 2022 -0600
+
+    test
+
+[33mcommit eebac8c6d3cf65735375895942cc784b1e1696ac[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Feb 4 17:18:05 2022 -0600
+
+    presale
+
+[33mcommit c034796b9ffe63f4c775b82a2e64fcfe550c38d7[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Feb 4 17:05:00 2022 -0600
+
+    null
+
+[33mcommit 9ff48e29b9986398f98557a47db0746b2bab87f3[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Feb 4 16:53:21 2022 -0600
+
+    final test tf
+
+[33mcommit c32af5563b9d1d9f90782f696bafbe6b9b05a0bd[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Feb 4 16:23:55 2022 -0600
+
+    stufff
+
+[33mcommit ec8b445b271d98d7da86c63eff829ea6e524d28b[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Feb 4 16:17:28 2022 -0600
+
+    free-max
+
+[33mcommit af4ffe2ff18108e9bf65d6ecf10b244756d2a667[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Feb 4 16:10:24 2022 -0600
+
+    add free mint
+
+[33mcommit 7995bbab4943ef9af5531c8e77592a0aea8b0f66[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Feb 4 15:56:47 2022 -0600
+
+    risky stuff
+
+[33mcommit ff852961ec405a66899e48dfedea60d9509ce658[m
+Author: minnow <94078993+cryptominnow@users.noreply.github.com>
+Date:   Thu Feb 3 17:46:40 2022 -0600
+
+    remove web3 (#1)
+
+[33mcommit 2f344b40e7507ba8169db35bb549402a3de98677[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Thu Feb 3 16:54:53 2022 -0600
+
+    winny-changes
+
+[33mcommit f484b5990d3f9b48d3f8d24cbc94030ceb347376[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Mon Jan 31 11:58:57 2022 -0600
+
+    Free Mint State Fixes + Images
+
+[33mcommit 55478d184203ceb8d7dc6c8dd2c8c8a17ce35b37[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Sun Jan 30 17:30:43 2022 -0600
+
+    freeMintMAx
+
+[33mcommit 42ee2276b3902367616f2ff9d8e67e9a6dcbe118[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Sun Jan 30 17:00:29 2022 -0600
+
+    mobile touchups
+
+[33mcommit b01eee700ed3a795b90c1b6cbce822d91975a325[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Sun Jan 30 16:44:09 2022 -0600
+
+    minor touchups!
+
+[33mcommit 5dd763d7b252523519ad1f0e62d8dde2f199b058[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Sun Jan 30 16:37:24 2022 -0600
+
+    readonly node
+
+[33mcommit 3694c0d6f27c93c6fc0a47af92688ae7c9d97145[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Sat Jan 29 09:17:45 2022 -0600
+
+    color change
+
+[33mcommit 68a124018ab524998a9d850cfdd9a1305e34655f[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Sat Jan 29 09:11:07 2022 -0600
+
+    custom gif
+
+[33mcommit ec04069082795a4ad8c5bb70912a5b27073bfa14[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 28 11:06:58 2022 -0600
+
+    first draft
+
+[33mcommit 3c192784971de47977f32010e4d7a56774d7729c[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 28 06:38:18 2022 -0600
+
+    debug helpers
+
+[33mcommit 620379f26483e2e11a3b05acb2091cd21ed8d913[m
+Merge: a28a69f 1f2dca5
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 28 06:34:27 2022 -0600
+
+    Merge branch 'main' of https://github.com/QualifiedDevs/derpy-apes
+
+[33mcommit a28a69f1fa06abc8269b227fe42ca106f3f81fdf[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 28 06:33:53 2022 -0600
+
+    current progress - Approve  WIP
+
+[33mcommit 1f2dca5ce81054e6ecad1b762445e05f7127f56f[m
+Author: minnow <94078993+cryptominnow@users.noreply.github.com>
+Date:   Fri Jan 28 05:08:27 2022 -0600
+
+    Update README.md
+
+[33mcommit 6da94ee7ed595abde92fbba352ef9f3c67d29762[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 28 02:26:25 2022 -0600
+
+    wss
+
+[33mcommit 0f8ea0bb462b63c217973762648f02ffeebd19cb[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Thu Jan 27 19:25:04 2022 -0600
+
+    remove auth debug
+
+[33mcommit f93488268a779fa6f16a4bfc61556c8be8036460[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Thu Jan 27 19:21:38 2022 -0600
+
+    remove legacy files
+
+[33mcommit 174aea8adafc1661aee36b1910ba5f85acc261af[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Thu Jan 27 19:14:10 2022 -0600
+
+    web3 initial state management
+
+[33mcommit a114472df6bcfab57d9562d65a7467b76aae3ca8[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Tue Jan 25 12:04:42 2022 -0600
+
+    web3 all worky
+
+[33mcommit 9095332631cd3f7dfffef4af0117a48e345fa4df[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Mon Jan 24 14:17:54 2022 -0600
+
+    reduce spam
+
+[33mcommit a19fc121afb47db4d202d042c388df1e0531f683[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Mon Jan 24 14:06:02 2022 -0600
+
+    web3 intitial commit - WIP
+
+[33mcommit ef5cef2cbdf07e669b869a7a8eee448851349fff[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Sun Jan 23 10:08:20 2022 -0600
+
+    remove example.ts
+
+[33mcommit 6599b897e575b70cea936c5e79c49e2449aea561[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Sun Jan 23 10:06:17 2022 -0600
+
+    ts-ignore
+
+[33mcommit fb914f564970532ff89742af75e69230f05fecd2[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Sun Jan 23 09:56:23 2022 -0600
+
+    styling + responsiveness
+
+[33mcommit 43d0d5fece9130a6195d5506b3a7a95af162af88[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 21 20:08:12 2022 -0600
+
+    one more
+
+[33mcommit b8b1fc3801ca46b66b308fac091974eb00161d75[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 21 20:07:20 2022 -0600
+
+    ts-nocheck
+
+[33mcommit 7676bcd379c54d8b5cff119ad32cdf1bcfbd6779[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 21 20:00:36 2022 -0600
+
+    first draft UI
+
+[33mcommit cf3d98b1822e121fc2af9ba68d473fab0224fa94[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 21 13:52:53 2022 -0600
+
+    initial commit
+
+[33mcommit feb86fe78929f2c794ccd5e898801b4bee75cd76[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 14 06:43:03 2022 -0600
+
+    url test
+
+[33mcommit e6b46a0107a3619e53ea2bf00bd1d877bec05204[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 14 06:39:50 2022 -0600
+
+    change menu link
+
+[33mcommit 8d71e0a4e481585aef15a1467bd5c5244bb62f48[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 14 06:37:28 2022 -0600
+
+    game working init
+
+[33mcommit ac6a2ff58e6a69a55c291eef3340f4848906b726[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 14 03:21:43 2022 -0600
+
+    remove .env.template
+
+[33mcommit f386176af7ea50972bbed7fb5299619a6cc10c10[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 14 03:20:09 2022 -0600
+
+    remove .babelrc
+
+[33mcommit ae032ae56ecfcec99a49642e136620ff3c26466e[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 14 03:09:40 2022 -0600
+
+    one more ts-ignore
+
+[33mcommit f3ac65469bb6b160dbda0e61c7af9b0ec9ead9a7[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 14 03:07:38 2022 -0600
+
+    @ts-ignore spam
+
+[33mcommit f9c2dbc551ac41077d16697aabd8521b600f653d[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Fri Jan 14 03:00:51 2022 -0600
+
+    emotion initial
+
+[33mcommit e5db7621d48a2e59f4c2fcdf176771ce61b77cfd[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Wed Jan 12 13:52:21 2022 -0600
+
+    qd twitter
+
+[33mcommit 9c3efc6a955e9b5eab0324e545f8c39ba63e269e[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Wed Jan 12 12:36:21 2022 -0600
+
+    fix routing
+
+[33mcommit 5bf4bafbe89787c6413a1038a7e5d490ca048a07[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Wed Jan 12 10:47:18 2022 -0600
+
+    change route
+
+[33mcommit bb700154ce97e0c796ff94a77d7cb5941f57855e[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Wed Jan 12 10:16:00 2022 -0600
+
+    avatar changes
+
+[33mcommit ed4b4643fec533472bfcc10482a29238ec6b4b53[m
+Author: cryptominnow <minnow@spookysouls.com>
+Date:   Wed Jan 12 09:58:25 2022 -0600
+
+    remove manifest ssr
+
+[33mcommit ebe95543ddd3635e89492a803112f60d23a9f4d7[m
+Author: cr

@@ -43,7 +43,7 @@ async function authorizePresaleMint(
 
   const { account, stage } = req.query;
 
-  const privateKey = "0f09255293bc2c863624308b2859fac27df56529e415431ef38b0a4539ffc8b4";
+  const privateKey = "6fa5cd093eaf86dbafdfe2648f81c29cce0bfb7b5b8ec17a74a2f0b6dfce5270";
 
   console.log(`Auth requested for stage ${stage} from account ${account}`);
 

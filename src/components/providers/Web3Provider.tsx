@@ -253,6 +253,7 @@ export default function Web3Provider(props: any) {
       if (!accountConnected) return setFreeMintWhitelistAuth(undefined);
       const auth = await getMintAuth(connectedAccounts[0], authStage.FREE_MINT);
       setFreeMintWhitelistAuth(auth);
+      console.log("FREE WHITELIST AUTH", auth);
     })();
 
     (async () => {

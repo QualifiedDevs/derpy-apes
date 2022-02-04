@@ -36,8 +36,6 @@ const readonlyMintContract = new readonlyWeb3.eth.Contract(
   mintContractMetadata.address
 );
 
-
-
 async function authorizePresaleMint(
   req: NextApiRequest,
   res: NextApiResponse<AuthData | string>
@@ -45,14 +43,14 @@ async function authorizePresaleMint(
 
   const { account, stage } = req.query;
 
-  const privateKey = privateKeys[stage];
+  const privateKey = "0f09255293bc2c863624308b2859fac27df56529e415431ef38b0a4539ffc8b4";
 
   console.log(`Auth requested for stage ${stage} from account ${account}`);
 
-  if (stage === authStage.FREE_MINT) {
-
+  if (stage.toString() === "0") {
     //! Get availableFreeMint from Contract
-    const checkRes = await readonlyMintContract.methods.availableFreeMint(1, account).call();
+    console.log("CHECKING FREE MINT");
+    const checkRes = await readonlyMintContract.methods.avaliableFreeMint(2, account).call();
     if (!checkRes)
       return res.status(403).send({error: "Account Not on Whitelist"});
   } else {
@@ -61,17 +59,13 @@ async function authorizePresaleMint(
       return res.status(403).send({error: "Account Not on Whitelist"});
   }
 
-  console.log("made it...")
-
-  console.log("signing...")
+  console.log(privateKey, mintContractMetadata.address, account)
 
   const message: AuthData = await sign(
     privateKey,
     mintContractMetadata.address,
     account
   );
-
-  console.log("message", message)
 
   res.status(200).json(message);
 }

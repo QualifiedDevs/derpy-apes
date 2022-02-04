@@ -21,27 +21,42 @@ const FreeMint = styled((props) => {
     console.log("FREE MINT");
     setIsMinting(true);
     const { hash, signature } = freeMintWhitelistAuth!;
+
+    console.log("FREE MINT", hash, signature)
+
     const contractMint = mintContract.methods.freeMint(
       2,
       hash,
       signature
     );
+
     try {
-      const gasEstimate = await contractMint.estimateGas();
-      console.log("gasEstimate", gasEstimate);
+      // const gasEstimate = await contractMint.estimateGas();
+      // console.log("gasEstimate", gasEstimate);
+
+      // const res = await contractMint.send({
+      //   gasLimit: Math.floor(gasEstimate * 1.15),
+      //   to: mintContract._address,
+      //   from: connectedAccounts[0],
+      // });
+
+      console.log(
+        "Mint Address", mintContract._address,
+        "From", connectedAccounts[0]
+      )
+
       const res = await contractMint.send({
-        gasLimit: Math.floor(gasEstimate * 1.15),
+        gasLimit: Math.floor(250000),
         to: mintContract._address,
-        from: connectedAccounts[0],
-      });
+        from: connectedAccounts[0]
+      })
+
       console.log(res);
     } catch (err) {
       console.error(err);
     }
     setIsMinting(false);
   };
-
-  console.log(freeMintWhitelistAuth, isMinting)
 
   return (
     <LoadingButton

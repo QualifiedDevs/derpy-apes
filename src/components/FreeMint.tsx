@@ -15,12 +15,14 @@ const FreeMint = styled((props) => {
     setIsMinting,
     connectedAccounts,
     freeMintMax,
+    setFreeMintWhitelistAuth
   } = useWeb3();
 
   const mint = async () => {
     console.log("FREE MINT");
     setIsMinting(true);
     const { hash, signature } = freeMintWhitelistAuth!;
+    setFreeMintWhitelistAuth(null);
 
     console.log("FREE MINT", hash, signature)
 

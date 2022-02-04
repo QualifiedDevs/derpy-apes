@@ -82,7 +82,7 @@ const EthMintButton = styled(({ mintQuantity, ...props }) => {
     setIsLoading(false);
     setIsMinting(false);
   }, [mintQuantity, projectStage, mintContract, ethPrice]);
-
+//
   return (
     <Button onClick={mint} disabled={isLoading || isMinting} {...props}>
       {isMinting ? (

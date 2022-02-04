@@ -61,8 +61,6 @@ async function authorizePresaleMint(
       return res.status(403).send({error: "Account Not on Whitelist"});
   }
 
-
-
   console.log("made it...")
 
   console.log("signing...")

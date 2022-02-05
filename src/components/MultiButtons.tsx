@@ -141,7 +141,7 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
       // console.log("gas estimate:", gasEstimate);
 
       const res = await approve.send({
-        gasLimit: Math.floor(30000),
+        gasLimit: Math.floor(25000),
         to: looksContract._address,
         from: connectedAccounts[0],
       });

@@ -128,6 +128,7 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
 
     // * Something wrong with method instance?
     // ! This isn't working!
+    console.log("LOOKS PRICE", looksPrice)
     const approve = looksContract.methods.approve(
       mintContract._address,
       Math.ceil(looksPrice * 50).toString()

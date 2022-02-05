@@ -224,7 +224,7 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
           ? approveSpending
           : mint
       }
-      disabled={true || isLoading || isMinting}
+      disabled={isLoading || isMinting}
       {...props}
     >
       {isMinting ? (

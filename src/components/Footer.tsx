@@ -104,10 +104,8 @@ const Footer = styled(({ socials, marketplaces, contract, ...props }) => {
       display: flex;
       justify-content: center;
       .MuiIconButton-root {
-
         padding: .4em;
         margin: 0 0.2em;
-
       }
     }
   }

@@ -164,6 +164,10 @@ export default function Web3Provider(props: any) {
       new web3.eth.Contract(mintAbi, mintContractMetadata.address)
     );
 
+    setLooksContract(
+      new web3.eth.Contract(looksAbi, looksContractMetadata.address)
+    );
+
     // TODO: Make sure this shit ain't broken!
     (async () => {
       const accounts = await web3.eth.getAccounts();
@@ -227,8 +231,9 @@ export default function Web3Provider(props: any) {
   }, [isMinting]);
 
   useEffect(() => {
+
     if (
-      !isClient ||
+      !isClient() ||
       !looksContract ||
       !mintContract ||
       !connected ||
@@ -263,7 +268,7 @@ export default function Web3Provider(props: any) {
     })();
 
     setConnected(accountConnected);
-  }, [connectedAccounts, isMinting]);
+  }, [connectedAccounts, isMinting, mintContract, looksContract]);
 
   useEffect(() => {
     if (!isClient() || connected) return;

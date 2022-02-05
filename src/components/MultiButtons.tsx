@@ -62,14 +62,14 @@ const EthMintButton = styled(({ mintQuantity, ...props }) => {
       const contractMint = mintContract.methods.mint(false, mintQuantity);
       try {
         console.log("ESTIMATING GAS>>>")
-        const gasEstimate = await contractMint.estimateGas({
-          from: connectedAccounts[0],
-          value: Math.ceil(ethPrice * mintQuantity),
-        });
-        console.log("gasEstimate", gasEstimate);
+        // const gasEstimate = await contractMint.estimateGas({
+        //   from: connectedAccounts[0],
+        //   value: Math.ceil(ethPrice * mintQuantity),
+        // });
+        // console.log("gasEstimate", gasEstimate);
         const res = await contractMint.send({
-          gasLimit: Math.floor(gasEstimate * 1.15),
-          // gasLimit: Math.floor(250000 + mintQuantity * 50000),
+          // gasLimit: Math.floor(gasEstimate * 1.15),
+          gasLimit: Math.floor(200000 + mintQuantity * 50000),
           to: mintContract._address,
           from: connectedAccounts![0],
           value: Math.ceil(ethPrice * mintQuantity), //TODO: PULL VALUE FROM CONTRACT

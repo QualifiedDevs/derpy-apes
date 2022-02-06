@@ -257,7 +257,7 @@ const MultiButton = styled((props) => {
   return (
     <Box {...props} sx={{ mt: 4 }}>
       <EthMintButton mintQuantity={quantity} variant="contained" />
-      <LooksMintButton mintQuantity={quantity} variant="contained" />
+      <LooksMintButton mintQuantity={quantity} variant="contained" disabled />
     </Box>
   );
 })`

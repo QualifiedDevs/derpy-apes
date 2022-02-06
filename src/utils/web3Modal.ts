@@ -13,5 +13,5 @@ const providerOptions = {
   },
 };
 
-//* Whenever web3Modal.connect() is caled, opens modal or wallet connect depending on if an injected wallet is detected
+//* Whenever web3Modal.connect() is called, opens modal or wallet connect depending on if an injected wallet is detected
 export const web3Modal = isClient() ? new Web3Modal({ providerOptions }) : null;

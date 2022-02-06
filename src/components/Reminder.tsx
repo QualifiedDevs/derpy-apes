@@ -5,7 +5,7 @@ const Reminder = styled((props) => {
     return (
         <Container {...props}>
             <Typography variant="h3">
-                Presale on February 4th at 6pm EST
+                PUBLIC MINT LIVE NOW
             </Typography>
         </Container>
     );

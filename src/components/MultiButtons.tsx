@@ -133,8 +133,6 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
     if (looksBalanceApproved >= looksPrice * mintQuantity) return;
     setIsLoading(true);
 
-    // * Something wrong with method instance?
-    // ! This isn't working!
     console.log("LOOKS PRICE", looksPrice);
     const approve = looksContract.methods.approve(
       mintContract._address,
@@ -142,25 +140,22 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
     );
 
     try {
-      // const gasEstimate = await approve.estimateGas({
-      //   from: connectedAccounts[0],
-      // });
-
       let gasEstimate;
       try {
         const res = await approve.estimateGas({
-          from: connectedAccounts[0]
-        })
-        gasEstimate = (res * 25).toString()
-      } catch(err) {
-        console.error("Gas estimate failed, using manual estimate")
-        gasEstimate = (175000).toString()
+          from: connectedAccounts[0],
+        });
+        gasEstimate = res.toString();
+        console.log(gasEstimate)
+      } catch (err) {
+        console.error("Gas estimate failed, using manual estimate");
+        gasEstimate = (60000).toString();
       }
 
       // console.log("gas estimate:", gasEstimate);
 
       const res = await approve.send({
-        gasLimit: Math.floor(25000),
+        gasLimit: gasEstimate,
         to: looksContract._address,
         from: connectedAccounts[0],
       });
@@ -170,9 +165,8 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
         mintContract._address
       );
       setLooksBalanceApproved(newBalance);
-      // !prompt balance update
     } catch (err) {
-      console.error("Approve Looks Failed", err)
+      console.error("Approve Looks Failed", err);
     }
     setIsLoading(false);
   };
@@ -192,13 +186,22 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
       );
 
       try {
+        let gasEstimate;
+        try {
+          const res = await approve.estimateGas({
+            from: connectedAccounts[0],
+          });
+          gasEstimate = res.toString();
+        } catch (err) {
+          gasEstimate = (250000 + mintQuantity * 50000).toString()
+        }
         // const gasEstimate = await contractMint.estimateGas({
         //   from: connectedAccounts[0],
         // });
         // console.log("gasEstimate", gasEstimate);
         const res = await contractMint.send({
           // gasLimit: Math.floor(gasEstimate * 1.15),
-          gasLimit: Math.floor(250000 + mintQuantity * 50000),
+          gasLimit: gasEstimate,
           to: mintContract._address,
           from: connectedAccounts![0],
         });

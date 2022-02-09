@@ -40,12 +40,19 @@ const EthMintButton = styled(({ mintQuantity, ...props }) => {
         signature
       );
       try {
-        // const gasEstimate = await contractMint.estimateGas({
-        //   from: connectedAccounts[0],
-        //   value: Math.ceil(ethPrice * mintQuantity),
-        // });
+        // let gasEstimate: string;
+
+        // try {
+        //   gasEstimate = await contractMint.estimateGas({
+        //     from: connectedAccounts[0],
+        //     value: Math.ceil(ethPrice * mintQuantity),
+        //   });
+        // } catch (err) {
+        //   gasEstimate = 250000
+        // }
 
         // console.log("gasEstimate", gasEstimate);
+
         const res = await contractMint.send({
           // gasLimit: Math.floor(gasEstimate * 1.15),
           gasLimit: Math.floor(250000 + mintQuantity * 50000),
@@ -61,7 +68,7 @@ const EthMintButton = styled(({ mintQuantity, ...props }) => {
       console.log("PUBLIC MINT");
       const contractMint = mintContract.methods.mint(false, mintQuantity);
       try {
-        console.log("ESTIMATING GAS>>>")
+        console.log("ESTIMATING GAS>>>");
         // const gasEstimate = await contractMint.estimateGas({
         //   from: connectedAccounts[0],
         //   value: Math.ceil(ethPrice * mintQuantity),
@@ -82,7 +89,7 @@ const EthMintButton = styled(({ mintQuantity, ...props }) => {
     setIsLoading(false);
     setIsMinting(false);
   }, [mintQuantity, projectStage, mintContract, ethPrice]);
-//
+  //
   return (
     <Button onClick={mint} disabled={isLoading || isMinting} {...props}>
       {isMinting ? (
@@ -128,7 +135,7 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
 
     // * Something wrong with method instance?
     // ! This isn't working!
-    console.log("LOOKS PRICE", looksPrice)
+    console.log("LOOKS PRICE", looksPrice);
     const approve = looksContract.methods.approve(
       mintContract._address,
       Math.ceil(looksPrice * 50).toString()
@@ -138,6 +145,17 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
       // const gasEstimate = await approve.estimateGas({
       //   from: connectedAccounts[0],
       // });
+
+      let gasEstimate;
+      try {
+        const res = await approve.estimateGas({
+          from: connectedAccounts[0]
+        })
+        gasEstimate = (res * 25).toString()
+      } catch(err) {
+        console.error("Gas estimate failed, using manual estimate")
+        gasEstimate = (175000).toString()
+      }
 
       // console.log("gas estimate:", gasEstimate);
 
@@ -154,7 +172,7 @@ const LooksMintButton = styled(({ mintQuantity, ...props }) => {
       setLooksBalanceApproved(newBalance);
       // !prompt balance update
     } catch (err) {
-      console.error("Gas Estimate Failed", err);
+      console.error("Approve Looks Failed", err)
     }
     setIsLoading(false);
   };
@@ -257,7 +275,7 @@ const MultiButton = styled((props) => {
   return (
     <Box {...props} sx={{ mt: 4 }}>
       <EthMintButton mintQuantity={quantity} variant="contained" />
-      <LooksMintButton mintQuantity={quantity} variant="contained" disabled />
+      <LooksMintButton mintQuantity={quantity} variant="contained" />
     </Box>
   );
 })`

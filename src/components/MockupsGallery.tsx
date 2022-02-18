@@ -17,13 +17,12 @@ const images = [img1, img2, img3, img4];
 const GalleryImage = styled(({ src, ...props }) => {
   return (
     <Box {...props}>
-      <Image src={src} layout="fill" objectFit="cover" />
+      <Image src={src} layout="responsive" objectFit="cover" />
     </Box>
   );
 })`
   position: relative;
   width: 100%;
-  aspect-ratio: 1;
 
   span {
     border-radius: 10px;
@@ -60,7 +59,7 @@ const Gallery = styled(({ images, ...props }) => {
   grid-gap: 0.8rem;
 `;
 
-const MockupsGallery = ({ images, ...props }) => {
+const MockupsGallery = ({...props }) => {
   // Decide which to render based on size of container
 
   const theme = useTheme();

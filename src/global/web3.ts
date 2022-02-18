@@ -6,7 +6,7 @@ import defaultProvider from "@utils/defaultProvider";
 export const providerAtom = atom(defaultProvider);
 
 export const signerAtom = atom((get) => {
-  const provider = get(providerAtom);
+  const provider = get(providerAtom) as any;
   const signer = provider.getSigner ? provider.getSigner() : null;
   return signer;
 });
@@ -41,10 +41,10 @@ export const runFetchAddressAtom = atom(
         set(addressResultAtom, {
           error: null,
           loading: false,
-          data: ethers.utils.getAddress(res),
+          data: ethers.utils.getAddress(res) as any,
         });
         //? Convert to checksum?
-      } catch (error) {
+      } catch (error: any) {
         set(addressResultAtom, { error, loading: false, data: null });
       }
     }

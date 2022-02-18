@@ -36,7 +36,7 @@ const MintButton = styled((props) => {
       const address = await signer.getAddress();
       console.log("SIGNER", contract.signer);
 
-      const cost = costResult.data;
+      const cost: any = costResult.data;
       if (!cost) throw `Cost Error: ${costResult.error}`;
 
       const totalCost = cost.mul(quantity);

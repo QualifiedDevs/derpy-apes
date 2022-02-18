@@ -1,6 +1,7 @@
 //@ts-nocheck
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { atom, useAtom } from "jotai";
 
 import { styled } from "@mui/material/styles";
 import { Box, Typography, IconButton, TextField } from "@mui/material";
@@ -8,25 +9,24 @@ import { Box, Typography, IconButton, TextField } from "@mui/material";
 import Add from "@mui/icons-material/Add";
 import Remove from "@mui/icons-material/Remove";
 
-import useWeb3 from "@hooks/useWeb3";
+import { maxPerTxnResultAtom } from "@src/global/mintContract";
 
-// Max quantity varies depending on context...
-// I can set it whenever they connect a wallet.
-// -1 can represent no permissions? or null.
+const maxQuantityAtom = atom((get) => get(maxPerTxnResultAtom).data || 100);
+const quantityAtom = atom(1);
 
-//? Default values if context if no QuantityProvider is found, or if its values resolve to null?
-export const QuantityContext = createContext({
-  quantity: 1,
-  setQuantity: (quantity: number) => {},
-});
+export function useQuantity() {
+  const [maxQuantity] = useAtom(maxQuantityAtom);
+  const [quantity, setQuantity] = useAtom(quantityAtom);
+
+  return { quantity, setQuantity, maxQuantity };
+}
 
 const IncrementButton = styled((props) => {
-  const { quantity, setQuantity } = useContext(QuantityContext);
-  const {maxPerTxn} = useWeb3()
+  const { quantity, setQuantity, maxQuantity } = useQuantity();
   return (
     <IconButton
       color="primary"
-      onClick={() => quantity < (maxPerTxn || 100) && setQuantity(quantity + 1)}
+      onClick={() => quantity < maxQuantity && setQuantity(quantity + 1)}
       {...props}
     >
       <Add />
@@ -40,7 +40,7 @@ const IncrementButton = styled((props) => {
 `;
 
 const DecrementButton = styled((props) => {
-  const { quantity, setQuantity } = useContext(QuantityContext);
+  const { quantity, setQuantity } = useQuantity();
   return (
     <IconButton
       color="primary"
@@ -58,14 +58,12 @@ const DecrementButton = styled((props) => {
 `;
 
 const ChooseQuantity = styled((props) => {
-
-  const { quantity, setQuantity } = useContext(QuantityContext);
-  const {maxPerTxn} = useWeb3()
+  const { quantity, setQuantity, maxQuantity } = useQuantity();
 
   return (
     <Box {...props}>
       <Typography className="details">
-        Amount to mint ({maxPerTxn || 100} max.)
+        Amount to mint ({maxQuantity} max.)
       </Typography>
       <Box className="selection-ui">
         <DecrementButton />
@@ -74,11 +72,10 @@ const ChooseQuantity = styled((props) => {
           value={quantity}
           onChange={(e) => {
             let value = e.target.value;
-            if (value === "")
-                return setQuantity(1)
-              value = parseInt(value);
-              if (isNaN(value)) return;
-              setQuantity(Math.max(Math.min(value, (maxPerTxn || 100)), 1));
+            if (value === "") return setQuantity(1);
+            value = parseInt(value);
+            if (isNaN(value)) return;
+            setQuantity(Math.max(Math.min(value, maxQuantity), 1));
           }}
           required
           placeholder="mint amount"
@@ -106,16 +103,5 @@ const ChooseQuantity = styled((props) => {
     align-items: center;
   }
 `;
-
-export const QuantityProvider = (props) => {
-  const [quantity, setQuantity] = useState(1);
-
-  return (
-    <QuantityContext.Provider
-      value={{ quantity, setQuantity}}
-      {...props}
-    />
-  );
-};
 
 export default ChooseQuantity;

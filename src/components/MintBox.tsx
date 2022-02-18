@@ -1,6 +1,6 @@
 //@ts-nocheck
-
-import React, { useContext } from "react";
+import { ethers } from "ethers";
+import { useAtom } from "jotai";
 
 import { styled } from "@mui/material/styles";
 import {
@@ -11,108 +11,54 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-import ChooseQuantity, { QuantityContext } from "@components/ChooseQuantity";
+import ChooseQuantity from "@components/ChooseQuantity";
 
 import ConnectWallet from "@components/ConnectWallet";
-import FreeMint from "@components/FreeMint";
-import MultiButton from "@components/MultiButtons";
+import MintButton from "@components/MintButton";
 
-import useWeb3 from "@hooks/useWeb3";
+import { useWeb3 } from "@src/global/web3";
+
+import {
+  costResultAtom,
+  totalSupplyResultAtom,
+  maxSupplyResultAtom,
+} from "@src/global/mintContract";
 
 const MintBox = styled((props) => {
-  const { maxQuantity } = useContext(QuantityContext);
+  const { signer } = useWeb3();
 
-  const {
-    connected,
-    presaleWhitelistAuth,
-    maxSupply,
-    totalSupply,
-    ethPrice,
-    looksPrice,
-    projectStage,
-  } = useWeb3();
+  const [maxSupplyResult] = useAtom(maxSupplyResultAtom);
+  const [totalSupplyResult] = useAtom(totalSupplyResultAtom);
+  const [costResult] = useAtom(costResultAtom);
 
   return (
     <Paper {...props}>
-      <Typography className="description" sx={{ mb: 2 }}>
-        <b>Derpy Apes</b> is a collection of <b>7,777</b> illustrated apes with a signature facial expression. Derp around on the blockchain with us. First <b>777</b> mints will be <b>FREE</b>.
+      <Typography className="description" sx={{ mb: 4 }}>
+        <b>Derpy Apes</b> is a collection of <b>7,777</b> illustrated apes with
+        a signature facial expression. Derp around on the blockchain with us.
+        First <b>777</b> mints will be <b>FREE</b>.
       </Typography>
-      {/* <Typography>
-        First <b>800 FREE</b>{" "}
-        <span className="details">(max. 1 NFT / tx.)</span>
-      </Typography>
-      <Typography sx={{ mb: 2 }}>
-        Then <b>0.039 Ξ each</b>{" "}
-        <span className="details">(max. {maxQuantity} NFT / tx.)</span>
-      </Typography> */}
       <Paper className="mint-info" elevation={1} sx={{ mb: 1.5 }}>
         <Typography className="key">NFT Minted</Typography>
         <Typography className="value">
-          {totalSupply || "... "}/{maxSupply || " ..."}
+          {totalSupplyResult.data || "..."} / {maxSupplyResult.data || 7777}
         </Typography>
       </Paper>
-      <Paper className="mint-info" elevation={1} sx={{ mb: 2.5 }}>
+      <Paper className="mint-info" elevation={1} sx={{ mb: 3 }}>
         <Typography className="key">Price</Typography>
         <Typography className="value">
-          {ethPrice / 1000000000000000000} ETH <wbr /> or {looksPrice / 1000000000000000000} LOOKS
+          {costResult.data ? ethers.utils.formatEther(costResult.data) : 0.024}{" "}
+          ETH
         </Typography>
       </Paper>
-
-      {connected ? (
-        (() => {
-          console.log("PROJECT STAGE", projectStage)
-          switch (projectStage) {
-            case 0:
-              return <FreeMint variant="contained" />;
-            case 1:
-              return presaleWhitelistAuth ? (
-                <Box className="connected-content">
-                  <ChooseQuantity
-                    className="choose-quantity"
-                    sx={{ mt: "auto", mb: 1.5 }}
-                  />
-                  <MultiButton
-                    variant="contained"
-                    className="multi-button"
-                    sx={{ mb: 2 }}
-                  />
-                </Box>
-              ) : (
-                <Paper className="presale-authorization" sx={{ mb: 2 }}>
-                  {presaleWhitelistAuth === undefined
-                    ? "Accessing Whitelist..."
-                    : "Wallet Not Whitelisted"}
-                </Paper>
-              );
-            case 2:
-              return (
-                <Box className="connected-content">
-                  <ChooseQuantity
-                    className="choose-quantity"
-                    sx={{ mt: "auto", mb: 1.5 }}
-                  />
-                  <MultiButton
-                    variant="contained"
-                    className="multi-button"
-                    sx={{ mb: 2 }}
-                  />
-                </Box>
-              );
-            default:
-              return "undefined";
-          }
-        })()
+      {signer ? (
+        <>
+          <ChooseQuantity sx={{ mb: 3 }} />
+          <MintButton variant="contained" sx={{ py: 2.5 }} />
+        </>
       ) : (
-        <ConnectWallet
-          variant="contained"
-          className="connect-button"
-          sx={{ mb: 2 }}
-        />
+        <ConnectWallet variant="contained" sx={{ py: 2.5 }} />
       )}
-
-      {/* <Typography className="total-minted">
-        My total NFT minted (0 / {maxQuantity})
-      </Typography> */}
     </Paper>
   );
 })`
@@ -156,7 +102,7 @@ const MintBox = styled((props) => {
     font-size: 1em;
     font-weight: semi-bold;
     text-transform: uppercase;
-    color: ${({theme}) => theme.palette.primary.main}
+    color: ${({ theme }) => theme.palette.primary.main};
   }
 
   .total-minted {

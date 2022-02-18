@@ -1,45 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { styled } from "@mui/material/styles";
 import { Button, CircularProgress } from "@mui/material";
 
-import useWeb3 from "@hooks/useWeb3";
-import { isClient } from "@utils";
+import { LoadingButton } from "@mui/lab";
 
-import { web3Modal } from "@utils/web3Modal";
+import { ethers } from "ethers";
+
+import isClient from "@utils/isClient";
+import web3Modal from "@utils/web3Modal";
+
+import { useAtom } from "jotai";
+import { useWeb3, runFetchAddressAtom } from "@src/global/web3";
 
 const ConnectWallet = styled((props) => {
   const [isLoading, setIsLoading] = useState(false);
+  const { connect, signer } = useWeb3();
 
-  const { connected, setProvider } = useWeb3();
-
-  const connect = async () => {
-    if (!isClient()) return;
+  const handleClick = async () => {
+    if (!isClient) return;
     setIsLoading(true);
 
-    let provider;
     try {
-      provider = await web3Modal?.connect();
+      const res = await web3Modal!.connect(); //? Why isn't this working?
+      const provider = new ethers.providers.Web3Provider(res);
+      connect(provider);
+      console.log("Connection Successful");
     } catch (err) {
       console.error(err);
     }
-    setProvider!(provider); //* DOESN'T RE-RENDER IF STATE IS THE SAME
+
     setIsLoading(false);
   };
 
   return (
-    <Button onClick={connect} disabled={isLoading || connected} {...props}>
-      {isLoading ? (
-        <CircularProgress size="1.5em" sx={{ m: ".25em" }} />
-      ) : connected ? (
-        "Connected"
-      ) : (
-        "Connect Wallet"
-      )}
-    </Button>
+    <LoadingButton onClick={handleClick} loading={isLoading} disabled={signer} {...props}>
+      {signer ? "Connected" : "Connect a Wallet"}
+    </LoadingButton>
   );
 })`
-
   .MuiCircularProgress-root {
     color: white;
   }

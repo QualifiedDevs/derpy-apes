@@ -78,66 +78,21 @@ const FAQ = styled((props) => {
             expanded={expanded === "panel1"}
             onChange={handleChange("panel1")}
           >
-            There will be a total of 7,777 derpy apes available to mint
+            There are a total of 7,777 derpy apes available to mint
           </FAQItem>
           <FAQItem
             summary={"What is the mint price?"}
             expanded={expanded === "panel2"}
             onChange={handleChange("panel2")}
           >
-            0.024 $ETH or the equivalent in $LOOKS
-          </FAQItem>
-          <FAQItem
-            summary={"Free mint?"}
-            expanded={expanded === "panel3"}
-            onChange={handleChange("panel3")}
-          >
-              The first <b>777</b> derpy apes will be <b>FREE</b> (max 1 per wallet). In order
-              to qualify for the free mint, you must hold a NFT from at least one
-              of these collections (will be validated by our smart contract):
-              <br />
-              <br />
-
-            <ul>
-              <li>alienfrens</li>
-              <li>cryptomories</li>
-              <li>3dfrankenpunks</li>
-              <li>deadfellaz</li>
-              <li>pudgy penguins</li>
-              <li>bayc</li>
-              <li>mayc</li>
-              <li>coolcats</li>
-              <li>doodles</li>
-              <li>fanggang</li>
-              <li>sketchyapebc</li>
-              <li>cryptobatz</li>
-              <li>chameleon nft</li>
-              <li>fishyfam</li>
-              <li>0xapes</li>
-              <li>night owl</li>
-            </ul>
-          </FAQItem>
-          <FAQItem
-            summary={"Can I mint using $LOOKS?"}
-            expanded={expanded === "panel4"}
-            onChange={handleChange("panel4")}
-          >
-            Yes
+            0.024 $ETH
           </FAQItem>
           <FAQItem
             summary={"When will my NFT be revealed?"}
             expanded={expanded === "panel5"}
             onChange={handleChange("panel5")}
           >
-            All derpy apes will be revealed 24 hours after minting is complete
-          </FAQItem>
-          <FAQItem
-            summary={"Is there a roadmap set in place?"}
-            expanded={expanded === "panel6"}
-            onChange={handleChange("panel6")}
-          >
-            Yes, you can learn more about our project's vision by joining our
-            discord
+            All derpy apes will be revealed instantly
           </FAQItem>
         </Box>
       </Container>
@@ -155,7 +110,6 @@ const FAQ = styled((props) => {
   .faq-box {
     list-style-type: none;
     padding: 0;
-
   }
 `;
 

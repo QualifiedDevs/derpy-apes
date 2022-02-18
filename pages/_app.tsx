@@ -7,6 +7,8 @@ import { CacheProvider, EmotionCache } from "@emotion/react";
 import theme from "@src/theme";
 import createEmotionCache from "@src/createEmotionCache";
 
+import { useMintContract } from "@src/global/mintContract";
+
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
@@ -14,14 +16,10 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
 
-import { QuantityProvider } from "@components/ChooseQuantity";
-import Web3Provider from "@components/providers/Web3Provider";
-
 function MyApp(props: MyAppProps) {
   //@ts-ignore
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  const manifestRef = useRef(pageProps.manifest);
-  pageProps.manifest = manifestRef.current;
+  useMintContract();
 
   return (
     <CacheProvider value={emotionCache}>
@@ -40,14 +38,7 @@ function MyApp(props: MyAppProps) {
             html: { scrollBehavior: "smooth" },
           }}
         />
-        <Web3Provider
-          abi={pageProps.contractABI}
-          contractAddress={pageProps.contractMetadata.address}
-        >
-          <QuantityProvider>
-            <Component {...pageProps} />
-          </QuantityProvider>
-        </Web3Provider>
+        <Component {...pageProps} />
       </ThemeProvider>
     </CacheProvider>
   );

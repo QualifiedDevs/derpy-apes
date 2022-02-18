@@ -9,37 +9,34 @@ import { LogoLong } from "@components/Branding";
 
 import MockupsGallery from "@components/MockupsGallery";
 import MintBox from "@components/MintBox";
-import Reminder from "@components/Reminder";
-import Team from "@components/Team";
+import Roadmap from "@components/Roadmap";
 import FAQ from "@components/FAQ";
 import Footer from "@components/Footer";
 
-const index = styled(
-  ({ manifest, contractABI, contractMetadata, mockupImages, ...props }) => {
-    return (
-      <Box {...props}>
-        {/* @ts-ignore */}
-        <Container id="hook" sx={{mb: 4}}>
-          <LogoLong className="logo" sx={{ mb: 1 }} />
-          <Box className="content">
-            <MockupsGallery images={mockupImages} />
-            <MintBox />
-          </Box>
-        </Container>
-        {/* <DebugAuthorization variant="contained"/> */}
-        {/* <Team team={manifest.team} /> */}
-        <Reminder />
+import manifest from "@src/manifest.json";
+import contractMetadata from "@src/artifacts/mintContract/metadata.json";
 
-        <FAQ />
-        <Footer
-          socials={manifest.socials}
-          marketplaces={manifest.marketplaces}
-          contract={contractMetadata.address}
-        />
-      </Box>
-    );
-  }
-)`
+const index = styled(({ mockupImages, ...props }) => {
+  return (
+    <Box {...props}>
+      {/* @ts-ignore */}
+      <Container id="hook" sx={{ mb: 15 }}>
+        <LogoLong className="logo" sx={{ mb: 1 }} />
+        <Box className="content">
+          <MockupsGallery images={mockupImages} />
+          <MintBox />
+        </Box>
+      </Container>
+      <Roadmap />
+      <FAQ />
+      <Footer
+        socials={manifest.socials}
+        marketplaces={manifest.marketplaces}
+        contract={contractMetadata.address}
+      />
+    </Box>
+  );
+})`
   height: 100%;
   display: flex;
   flex-direction: column;

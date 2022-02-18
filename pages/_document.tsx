@@ -31,15 +31,6 @@ export default class MyDocument extends Document {
   }
 }
 
-
-const manifest = JSON.parse(fs.readFileSync("./src/manifest.json", "utf-8"));
-const contractMetadata = JSON.parse(
-  fs.readFileSync("./src/artifacts/mintContract/metadata.json", "utf-8")
-);
-const contractABI = JSON.parse(
-  fs.readFileSync("./src/artifacts/mintContract/abi.json", "utf-8")
-);
-
 // `getInitialProps` belongs to `_document` (instead of `_app`),
 // it's compatible with static-site generation (SSG).
 MyDocument.getInitialProps = async (ctx) => {
@@ -76,9 +67,6 @@ MyDocument.getInitialProps = async (ctx) => {
     originalRenderPage({
       enhanceApp: (App: any) =>
         function EnhanceApp(props) {
-          props.pageProps.manifest = manifest;
-          props.pageProps.contractMetadata = contractMetadata;
-          props.pageProps.contractABI = contractABI;
           return <App emotionCache={cache} {...props} />;
         },
     });

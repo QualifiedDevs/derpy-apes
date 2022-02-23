@@ -8,7 +8,7 @@ import {
 } from "@utils/raffleServerAPI";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
-  const { raffleId, entryId } = req.query;
+  const { raffleId, entryId } = req.query as { [key: string]: string };
   const { maxEntries, numWinners } = req.body?.data || {};
 
   switch (req.method) {

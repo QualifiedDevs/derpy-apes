@@ -12,6 +12,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     case "GET":
       //* FETCH RAFFLES
       console.log("Fetching raffle summaries...");
+      //@ts-ignore
       const [raffles, fetchRafflesErr] = await formatRes(fetchRaffles(includeEntries));
       if (fetchRafflesErr) {
         const msg = "Failed to fetch raffles";

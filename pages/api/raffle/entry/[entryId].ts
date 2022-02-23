@@ -9,7 +9,7 @@ import {
 import formatRes from "@utils/formatRes";
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
-  const { entryId } = req.query;
+  const { entryId } = req.query as {[key: string] : string};
   const { entryProperties } = req.body?.data || {};
 
   switch (req.method) {

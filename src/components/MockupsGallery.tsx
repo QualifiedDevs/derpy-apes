@@ -1,5 +1,3 @@
-//@ts-nocheck
-
 import React, { useState, useMemo, useEffect, useRef } from "react";
 
 import { styled, useTheme } from "@mui/material/styles";
@@ -14,7 +12,7 @@ import img4 from "@public/mockups/4.png";
 
 const images = [img1, img2, img3, img4];
 
-const GalleryImage = styled(({ src, ...props }) => {
+const GalleryImage = styled(({ src, ...props }: {src: string}) => {
   return (
     <Box {...props}>
       <Image src={src} layout="responsive" objectFit="cover" />
@@ -29,28 +27,32 @@ const GalleryImage = styled(({ src, ...props }) => {
   }
 `;
 
-const MockupsGif = styled(({ images, delay, ...props }) => {
-  const galleryImages = useMemo(() =>
-    images.map((image) => <GalleryImage src={image} />)
-  );
+const MockupsGif = styled(
+  ({ images, delay, ...props }: { images: any[]; delay: number }) => {
+    const galleryImages = useMemo(() => {
+      return images.map((image: string, index: number) => (
+        <GalleryImage src={image} key={`gif-${index}`} />
+      ));
+    }, [images]);
 
-  const active = useRef(0);
-  const [activeImage, setActiveImage] = useState(0);
+    const active = useRef(0);
+    const [activeImage, setActiveImage] = useState(0);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setActiveImage(active.current);
-      active.current = (active.current + 1) % 4;
-    }, delay);
-    return () => clearInterval(intervalId);
-  }, []);
+    useEffect(() => {
+      const intervalId = setInterval(() => {
+        setActiveImage(active.current);
+        active.current = (active.current + 1) % 4;
+      }, delay);
+      return () => clearInterval(intervalId);
+    }, []);
 
-  return <Box {...props}>{galleryImages[activeImage]}</Box>;
-})``;
+    return <Box {...props}>{galleryImages[activeImage]}</Box>;
+  }
+)``;
 
-const Gallery = styled(({ images, ...props }) => {
-  const galleryImages = images.map((imagePathname: string) => (
-    <GalleryImage src={imagePathname} key={imagePathname} />
+const Gallery = styled(({ images, ...props }: {images: any[]}) => {
+  const galleryImages = images.map((imagePathname: string, index: number) => (
+    <GalleryImage src={imagePathname} key={`gallery-${index}`} />
   ));
   return <Box {...props}>{galleryImages}</Box>;
 })`
@@ -59,7 +61,7 @@ const Gallery = styled(({ images, ...props }) => {
   grid-gap: 0.8rem;
 `;
 
-const MockupsGallery = ({...props }) => {
+const MockupsGallery = ({ ...props }) => {
   // Decide which to render based on size of container
 
   const theme = useTheme();

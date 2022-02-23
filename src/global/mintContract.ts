@@ -7,7 +7,13 @@ import defaultProvider from "@utils/defaultProvider";
 import abi from "@src/artifacts/mintContract/abi.json";
 import metadata from "@src/artifacts/mintContract/metadata.json";
 
-import { useWeb3, providerAtom, signerAtom } from "@src/global/web3";
+import {
+  useWeb3,
+  providerAtom,
+  signerAtom,
+  addressResultAtom,
+  addressAtom,
+} from "@src/global/web3";
 
 export const contractAtom = atom(
   new ethers.Contract(metadata.address, abi, defaultProvider)
@@ -160,6 +166,53 @@ const runFetchMaxPerTxnAtom = atom(null, (get, set) => {
   fetchData();
 });
 
+export const ownedNFTsResultAtom = atom({
+  error: null,
+  data: null,
+  loading: false,
+});
+
+const runFetchOwnedNFTsAtom = atom(null, (get, set) => {
+
+  const signer = get(signerAtom);
+
+  if (!signer) {
+    set(ownedNFTsResultAtom, {
+      data: null,
+      error: null,
+      loading: false,
+    });
+    return;
+  }
+  
+  async function fetchData() {
+    set(ownedNFTsResultAtom, (prev) => ({ ...prev, loading: true }));
+
+    try {
+      const address = await signer.getAddress();
+      if (!address) {
+        throw "No address attached to signer";
+      }
+
+      const res = await getReadonlyProperty(
+        "walletOfOwner",
+        get(contractAtom),
+        address
+      );
+
+      set(ownedNFTsResultAtom, {
+        data: res,
+        error: null,
+        loading: false,
+      });
+    } catch (error: any) {
+      set(ownedNFTsResultAtom, { data: null, loading: false, error });
+      console.error(error);
+    }
+  }
+  fetchData();
+});
+
 export function useMintContract() {
   const { provider, signer } = useWeb3();
 
@@ -168,12 +221,14 @@ export function useMintContract() {
   const [, updateCost] = useAtom(runFetchCostAtom);
   const [, updateMaxPerTxn] = useAtom(runFetchMaxPerTxnAtom);
   const [, updateContractProvider] = useAtom(updateContractProviderAtom);
+  const [, updateOwnedNFTs] = useAtom(runFetchOwnedNFTsAtom);
 
   const [isMinting] = useAtom(isMintingAtom);
 
   useEffect(() => {
     if (!provider) return;
     updateContractProvider();
+    updateOwnedNFTs();
   }, [provider, signer]);
 
   useEffect(() => {
@@ -181,5 +236,6 @@ export function useMintContract() {
     updateTotalSupply();
     updateMaxSupply();
     updateMaxPerTxn();
+    updateOwnedNFTs();
   }, [isMinting]);
 }

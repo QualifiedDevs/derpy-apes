@@ -15,7 +15,8 @@ const maxQuantityAtom = atom((get) => get(maxPerTxnResultAtom).data || 100);
 const quantityAtom = atom(1);
 
 export function useQuantity() {
-  const [maxQuantity] = useAtom(maxQuantityAtom);
+  //TODO: Change back to OG!
+  const [maxQuantity] = [7777];
   const [quantity, setQuantity] = useAtom(quantityAtom);
 
   return { quantity, setQuantity, maxQuantity };

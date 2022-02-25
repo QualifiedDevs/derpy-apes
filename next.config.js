@@ -16,7 +16,7 @@ module.exports = {
     return [
       {
         source: "/derpmfers",
-        destination: "https://derpmfers.vercel.app/",
+        destination: "https://derpmfers.vercel.app/derpymfers",
         permanent: true,
       },
     ];

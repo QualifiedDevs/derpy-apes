@@ -16,7 +16,7 @@ module.exports = {
     return [
       {
         source: "/derpymfers",
-        destination: "https://mfers.derpyape.io/derpymfers",
+        destination: "https://mfers.derpyape.io",
         permanent: true,
       },
     ];

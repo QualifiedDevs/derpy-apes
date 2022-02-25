@@ -12,4 +12,13 @@ module.exports = {
   images: {
     domains: ["ipfs.io"],
   },
+  redirects() {
+    return [
+      {
+        source: "/derpmfers",
+        destination: "https://derpmfers.vercel.app/",
+        permanent: true,
+      },
+    ];
+  },
 };

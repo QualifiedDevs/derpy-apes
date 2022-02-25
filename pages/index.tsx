@@ -3,7 +3,7 @@
 import fs from "fs";
 
 import { styled } from "@mui/material/styles";
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container, Typography, Button } from "@mui/material";
 
 import { LogoLong } from "@components/Branding";
 
@@ -16,12 +16,28 @@ import Footer from "@components/Footer";
 import manifest from "@src/manifest.json";
 import contractMetadata from "@src/artifacts/mintContract/metadata.json";
 
+const MfersCollection = styled((props) => {
+  return (
+    <Button href="/derpymfers" {...props} sx={{ py: 2, px: 4 }}>
+      mfers Collection
+    </Button>
+  );
+})`
+  background-color: #ff5845;
+  :hover {
+    background-color: #bd4335;
+  }
+`;
+
 const index = styled(({ mockupImages, ...props }) => {
   return (
     <Box {...props}>
       {/* @ts-ignore */}
       <Container id="hook" sx={{ mb: 15 }}>
-        <LogoLong className="logo" sx={{ mb: 1 }} />
+        <Box className="top" sx={{mb: 6}}>
+          <LogoLong className="logo" sx={{ mb: 1 }} />
+          <MfersCollection variant="contained" />
+        </Box>
         <Box className="content">
           <MockupsGallery images={mockupImages} />
           <MintBox />
@@ -43,6 +59,12 @@ const index = styled(({ mockupImages, ...props }) => {
   justify-content: center;
   align-items: center;
   color: white;
+
+  .top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
   .logo {
     width: min(100%, 400px);

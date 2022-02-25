@@ -15,8 +15,8 @@ module.exports = {
   redirects() {
     return [
       {
-        source: "/derpmfers",
-        destination: "https://derpmfers.vercel.app/derpymfers",
+        source: "/derpymfers",
+        destination: "https://mfers.derpyape.io/derpymfers",
         permanent: true,
       },
     ];

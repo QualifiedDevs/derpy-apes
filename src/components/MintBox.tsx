@@ -9,6 +9,7 @@ import {
   Typography,
   Button,
   CircularProgress,
+  Alert
 } from "@mui/material";
 
 import ChooseQuantity from "@components/ChooseQuantity";
@@ -23,6 +24,21 @@ import {
   totalSupplyResultAtom,
   maxSupplyResultAtom,
 } from "@src/global/mintContract";
+
+const Notice = styled((props) => {
+  return (
+    <Alert severity="info" {...props}>
+      Metamask is currently experiencing delays, if you are having trouble
+      minting please use a different wallet or try again later.
+    </Alert>
+  );
+})`
+  background: #ffbc3e;
+  color: white;
+  .MuiAlert-root {
+    position: fixed;
+  }
+`;
 
 const MintBox = styled((props) => {
   const { signer } = useWeb3();
@@ -51,6 +67,9 @@ const MintBox = styled((props) => {
           ETH
         </Typography>
       </Paper>
+
+      <Notice sx={{ mb: 2 }} />
+
       {signer ? (
         <>
           <ChooseQuantity sx={{ mb: 3 }} />
